@@ -49,7 +49,7 @@ A private, reversible bridge lets the living-room Pi switch between the Korean h
 - Extracted the Pi's deployed kiosk front-end (renderer, captions, state pill, wake ripple, week calendar + 5 skins, Ask overlay, OTAKU host), translated its visible strings to English and replaced household identifiers.
 - New `kiosk/showcase.py`: the production HTTP/SSE contract with fictional calendar data, in-memory voice-proposed edits confirmed by touch, simulated voice-agent scenarios, and a same-origin proxy (HTTP + WebSocket) to both apps — the same topology as the Pi.
 - One-command install/run with Live and Demo modes, port preflight, and per-app state isolation.
-- Tests: showcase/launcher (20), ported week-calendar suite, browser walk-through, public audit + gitleaks. Fixed the Ask smoke script to send a real Origin behind a path-prefix proxy.
+- Tests: showcase/launcher (21), ported week-calendar suite, browser walk-through, public audit + gitleaks. Fixed the Ask smoke script to send a real Origin behind a path-prefix proxy.
 - Re-verified both Nemotron paths live from this repository (see [verification](verification.md)).
 
 ## Not done during the hackathon

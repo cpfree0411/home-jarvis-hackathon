@@ -1,0 +1,29 @@
+{
+  "model_listing": {
+    "model_listed": true,
+    "model": "nvidia/Nemotron-3-Ultra-550b-a55b",
+    "description": "Nemotron 3 Ultra is a 550B hybrid MoE model from NVIDIA, optimized for the most demanding multi-agent AI and complex reasoning tasks.",
+    "pricing_per_token": {
+      "prompt": "0.000001",
+      "completion": "0.000003"
+    }
+  },
+  "result": {
+    "NEMOTRON_SMOKE": "PASS",
+    "served_model": "nvidia/Nemotron-3-Ultra-550b-a55b",
+    "choice": "B",
+    "strength": "LEAN",
+    "usage": {
+      "prompt_tokens": 362,
+      "completion_tokens": 113,
+      "total_tokens": 475,
+      "provider": "nebius",
+      "model": "nvidia/Nemotron-3-Ultra-550b-a55b",
+      "finish_reason": "stop",
+      "latency_s": 1.668
+    },
+    "estimated_cost_usd": 0.000701,
+    "ascii_share": 1.0,
+    "reasoning_chars": 144
+  }
+}

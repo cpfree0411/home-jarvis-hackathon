@@ -116,7 +116,7 @@ Both apps call the OpenAI-compatible **Chat Completions** API of **Nebius Token 
 
 Read the code: [`apps/ask-the-three/ask_three_en/providers.py` → `nebius_complete`](apps/ask-the-three/ask_three_en/providers.py), [`ai.py` → `organize_story`, `run_member`](apps/ask-the-three/ask_three_en/ai.py), [`domain.py` → `organized`, `panel_result`](apps/ask-the-three/ask_three_en/domain.py); [`apps/otaku-gallery/otaku_gallery/nebius.py` → `NebiusWriter.write`](apps/otaku-gallery/otaku_gallery/nebius.py), [`research.py` → `ResearchManager._run`, `build_page`](apps/otaku-gallery/otaku_gallery/research.py). Details, request bodies, parsing and failure handling: **[docs/nemotron-integration.md](docs/nemotron-integration.md)**.
 
-Measured on 2026-10-20 from this repository: Ask the Three organizer + Nemotron judge end-to-end through the kiosk proxy in **4.3 s** (organize 2.0 s, panel 2.1 s); a single judge call **1.67 s**, 475 tokens; a Research Guide page **2.84 s**, 1,873 tokens. Feedback on the platform: [docs/nebius-feedback.md](docs/nebius-feedback.md).
+Measured on 2026-10-20 from this repository: Ask the Three's Nemotron organizer **2.0–2.6 s** and the judge panel **2.1 s** end-to-end through the kiosk proxy; a single judge call **1.67 s** (475 tokens); a Research Guide page **2.84 s** (1,873 tokens). All results: [docs/verification.md](docs/verification.md). Feedback on the platform: [docs/nebius-feedback.md](docs/nebius-feedback.md).
 
 ---
 

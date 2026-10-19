@@ -1,0 +1,45 @@
+{
+  "E2E": "PASS",
+  "story": "f1d3640c-302b-4c0d-87b5-9fdf2e3f45da",
+  "organizer": "prepared-sample",
+  "organize_s": 0.0,
+  "panel_s": 0.0,
+  "waiting_polls": 0,
+  "embargo_leaks": 0,
+  "hangul_chars": 0,
+  "seats": {
+    "nemotron": {
+      "status": "COMPLETED",
+      "provider": "fixture",
+      "model": "demo-fixture",
+      "live": false,
+      "choice": "B",
+      "strength": "LEAN",
+      "error": null
+    },
+    "gpt": {
+      "status": "COMPLETED",
+      "provider": "fixture",
+      "model": "demo-fixture",
+      "live": false,
+      "choice": "A",
+      "strength": "CLOSE",
+      "error": null
+    },
+    "claude": {
+      "status": "COMPLETED",
+      "provider": "fixture",
+      "model": "demo-fixture",
+      "live": false,
+      "choice": "B",
+      "strength": "LEAN",
+      "error": null
+    }
+  },
+  "aggregate": {
+    "winner": "B",
+    "votes_a": 1,
+    "votes_b": 2,
+    "live_votes": 0
+  }
+}

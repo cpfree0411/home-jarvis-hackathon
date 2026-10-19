@@ -114,7 +114,7 @@ GET /api/research/{id} (poll) ─► web/research.js renders badges, citation nu
 | Call (2026-10-20, from this repository) | Tokens (prompt + completion) | Latency | Estimated cost |
 |---|---|---|---|
 | Ask the Three single judge (`smoke-nemotron`) | 362 + 113 | 1.67 s | $0.0007 |
-| Ask the Three organizer + judge, full story through the kiosk proxy | n/a (two calls) | 2.0 s + 2.1 s | — |
+| Ask the Three organizer + judge, full story through the kiosk proxy (two runs) | not recorded | organize 2.0 / 2.6 s, panel 2.1 s | — |
 | Research Guide page (`model_smoke.py`, fixture evidence) | 939 + 934 | 2.84 s | $0.0037 |
 
 Estimates use the listed $1 / $3 per million input / output tokens; actual billing was not read.

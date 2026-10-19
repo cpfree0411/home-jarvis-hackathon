@@ -1,0 +1,45 @@
+{
+  "E2E": "PASS",
+  "story": "ec31e151-bf8c-409c-a753-c569b2863a38",
+  "organizer": "nvidia/Nemotron-3-Ultra-550b-a55b",
+  "organize_s": 2.6,
+  "panel_s": 2.1,
+  "waiting_polls": 2,
+  "embargo_leaks": 0,
+  "hangul_chars": 0,
+  "seats": {
+    "nemotron": {
+      "status": "COMPLETED",
+      "provider": "nebius",
+      "model": "nvidia/Nemotron-3-Ultra-550b-a55b",
+      "live": true,
+      "choice": "B",
+      "strength": "LEAN",
+      "error": null
+    },
+    "gpt": {
+      "status": "COMPLETED",
+      "provider": "fixture",
+      "model": "demo-fixture",
+      "live": false,
+      "choice": "A",
+      "strength": "CLOSE",
+      "error": null
+    },
+    "claude": {
+      "status": "COMPLETED",
+      "provider": "fixture",
+      "model": "demo-fixture",
+      "live": false,
+      "choice": "B",
+      "strength": "LEAN",
+      "error": null
+    }
+  },
+  "aggregate": {
+    "winner": "B",
+    "votes_a": 1,
+    "votes_b": 2,
+    "live_votes": 1
+  }
+}

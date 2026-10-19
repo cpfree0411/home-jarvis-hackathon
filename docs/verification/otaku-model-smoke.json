@@ -1,0 +1,28 @@
+{
+  "status": "answered",
+  "source_count": 1,
+  "unverified_count": 0,
+  "provider": "Nebius Token Factory",
+  "endpoint_host": "api.tokenfactory.us-central1.nebius.com",
+  "model": "nvidia/Nemotron-3-Ultra-550b-a55b",
+  "usage": {
+    "prompt_tokens": 939,
+    "completion_tokens": 934,
+    "total_tokens": 1873
+  },
+  "metrics": {
+    "http_status": 200,
+    "latency_ms": 2844,
+    "request_bytes": 6421
+  },
+  "paid_calls": 1,
+  "estimated_cost_usd": 0.003741,
+  "price_source": "https://github.com/nebius/token-factory-cookbook/blob/main/models/nemotron/nemotron3-ultra-550b-a55b.md",
+  "price_usd_per_million": {
+    "input": 1.0,
+    "output": 3.0
+  },
+  "response_model_validated": true,
+  "strict_schema_validated": true,
+  "passed": true
+}

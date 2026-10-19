@@ -1,0 +1,152 @@
+{
+  "base": "http://127.0.0.1:18780",
+  "steps": [
+    {
+      "name": "kiosk-gallery",
+      "screenshot": "01-kiosk-gallery.png",
+      "overflow": false,
+      "hangul": 0,
+      "ok": true,
+      "detail": "OTAKU app visible over renderer"
+    },
+    {
+      "name": "voice-listening-thinking",
+      "screenshot": "02-voice-listening-thinking.png",
+      "overflow": false,
+      "hangul": 0
+    },
+    {
+      "name": "voice-speaking-caption",
+      "screenshot": "03-voice-speaking-caption.png",
+      "overflow": false,
+      "hangul": 0,
+      "ok": true,
+      "detail": "caption text rendered"
+    },
+    {
+      "name": "week-open",
+      "screenshot": "04-week-open.png",
+      "overflow": false,
+      "hangul": 0,
+      "ok": true,
+      "detail": "seven slats open"
+    },
+    {
+      "name": "week-touch-select",
+      "screenshot": "05-week-touch-select.png",
+      "overflow": false,
+      "hangul": 0,
+      "ok": true,
+      "detail": "selected 2026-10-23"
+    },
+    {
+      "name": "week-next",
+      "screenshot": "06-week-next.png",
+      "overflow": false,
+      "hangul": 0,
+      "ok": true,
+      "detail": "weekStart 2026-10-26"
+    },
+    {
+      "name": "week-skin-moonlight",
+      "screenshot": "07-week-skin-moonlight.png",
+      "overflow": false,
+      "hangul": 0,
+      "ok": true,
+      "detail": "skin"
+    },
+    {
+      "name": "week-voice-focus",
+      "screenshot": "08-week-voice-focus.png",
+      "overflow": false,
+      "hangul": 0
+    },
+    {
+      "name": "week-voice-proposal",
+      "screenshot": "09-week-voice-proposal.png",
+      "overflow": false,
+      "hangul": 0,
+      "ok": true,
+      "detail": "proposal on Thursday"
+    },
+    {
+      "name": "week-touch-confirm",
+      "screenshot": "10-week-touch-confirm.png",
+      "overflow": false,
+      "hangul": 0,
+      "ok": true,
+      "detail": "confirmation result shown"
+    },
+    {
+      "name": "ask-open",
+      "screenshot": "11-ask-open.png",
+      "overflow": false,
+      "hangul": 0,
+      "ok": true,
+      "detail": "overlay open"
+    },
+    {
+      "name": "ask-closed",
+      "screenshot": "12-ask-closed.png",
+      "overflow": false,
+      "hangul": 0,
+      "ok": true,
+      "detail": "overlay closed, gallery back"
+    },
+    {
+      "name": "otaku-details-tags",
+      "screenshot": "13-otaku-details-tags.png",
+      "overflow": false,
+      "hangul": 0,
+      "ok": true,
+      "detail": "details open"
+    },
+    {
+      "name": "otaku-research-result",
+      "screenshot": "14-otaku-research-result.png",
+      "overflow": false,
+      "hangul": 0,
+      "ok": true,
+      "detail": "research page rendered"
+    },
+    {
+      "name": "otaku-research-sources",
+      "screenshot": "15-otaku-research-sources.png",
+      "overflow": false,
+      "hangul": 0
+    },
+    {
+      "name": "otaku-research-keyboard",
+      "screenshot": "16-otaku-research-keyboard.png",
+      "overflow": false,
+      "hangul": 0,
+      "ok": true,
+      "detail": "touch keyboard visible"
+    },
+    {
+      "name": "otaku-keyboard-typed",
+      "screenshot": "17-otaku-keyboard-typed.png",
+      "overflow": false,
+      "hangul": 0
+    },
+    {
+      "name": "otaku-closed",
+      "screenshot": "18-otaku-closed.png",
+      "overflow": false,
+      "hangul": 0,
+      "ok": true,
+      "detail": "research lease released"
+    }
+  ],
+  "console_errors": [],
+  "page_errors": [],
+  "ask_text_sample": "Ask the Three\nClose\n\nA FRIENDLY SECOND OPINION\n\nCan’t agree?\nAsk the three.\n\nOne person tells the story. It’s summed up neutrally, then three AIs each pick a side on their own, and you see all three at once.\n\nNemotron\nGPT\nDEMO\nClaude\nDEMO\n\nGPT and Claude are running as a labelled demo fixture: prepared answers, not live AI.\n\nNew story\nTell it → tidy it → ask the three\nPast stories\nLook back at ear",
+  "overlay_holders_during_details": [
+    "otaku-en-research"
+  ],
+  "topic": "Mecha\nGENRE",
+  "research_text_sample": "Research Guide\nPowered by NVIDIA Nemotron 3 Ultra\nResearch\nClose ×\nRelated to “Dawn Guardian”:\nMecha\nMobile Suit Gundam\nGenre\nStrong source match\nNVIDIA Nemotron 3 Ultra\nMecha anime and manga\n\nA genre of anime and manga centered on giant robots in battle, split into super robot and real robot subcategories.\n\nMecha is a genre of anime and manga that features mecha in battle. It is divided into two subcategories: \"super robot\" with implausible, super-sized robots, and \"real robot\" where robots follow realistic physics and technological limits. The genre spans action, comedy, drama, and has expan",
+  "typed_query": "Cyberpunk",
+  "failures": [],
+  "result": "PASS"
+}

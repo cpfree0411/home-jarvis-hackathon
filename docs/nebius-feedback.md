@@ -25,7 +25,7 @@ All with `temperature: 0`, strict `json_schema`, thinking off, no tools:
 | Call | Result |
 |---|---|
 | Ask the Three judge (`smoke-nemotron`, 2026-10-20) | HTTP 200, served model = requested, 362 + 113 tokens, **1.67 s**, schema-valid |
-| Ask the Three organizer + judge, full story via our proxy (2026-10-20) | both 200, organize **2.0 s**, panel **2.1 s** |
+| Ask the Three organizer + judge, full story via our proxy (2026-10-20, ×2) | all 200, organize **2.0 / 2.6 s**, panel **2.1 s** |
 | Research Guide page (`model_smoke.py`, 2026-10-20) | HTTP 200, 939 + 934 tokens, **2.84 s**, schema-valid |
 | Research Guide via touch in the kiosk (2026-10-20, ×2) | cited English pages rendered |
 | Super 120B vs Ultra 550B benchmark (2026-10-19, 5 + 5 calls) | 10/10 HTTP 200, `finish_reason: stop`, strict JSON valid; median round trip 4.28 s vs **3.94 s** |
