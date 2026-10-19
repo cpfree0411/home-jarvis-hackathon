@@ -1,0 +1,63 @@
+Home Jarvis — NVIDIA × Nebius hackathon showcase
+
+Copyright (c) 2026 Home Jarvis contributors. Code in this repository is
+distributed under the MIT license (LICENSE) unless a file or directory below
+says otherwise.
+
+Included applications
+---------------------
+apps/ask-the-three/   Ask the Three, English edition. MIT. See its LICENSE,
+                      NOTICE and docs/LICENSE_AUDIT.md. Bundles Gaegu and
+                      Nunito font subsets under SIL OFL 1.1.
+apps/otaku-gallery/   OTAKU Gallery, English edition. Code MIT; original
+                      procedural artwork CC0 1.0; bundled Wikipedia excerpts
+                      CC BY-SA 4.0. See its LICENSE, NOTICE and LICENSES/.
+
+Kiosk front-end (kiosk/web)
+---------------------------
+Extracted from the Home Jarvis production kiosk (same authors), translated to
+English and stripped of household identifiers. MIT, except:
+
+vendor/thinking-orbs-engine.js
+  Canvas engine bundled from thinking-orbs 0.3.1.
+  Copyright (c) 2026 Jakub Antalik. MIT; vendor/THINKING-ORBS-LICENSE.txt.
+
+fonts/NanumSquareNeo.ttf, fonts/NanumSquareNeo-Bold.woff2
+  NanumSquare Neo, Copyright (c) NAVER Corporation.
+  SIL Open Font License 1.1; fonts/NanumSquareNeo-LICENSE.txt.
+
+fonts/skins/Bricolage-Riso.woff2
+  Bricolage Grotesque, Copyright 2022 The Bricolage Grotesque Project Authors.
+  SIL OFL 1.1; fonts/skins/bricolagegrotesque-OFL.txt.
+fonts/skins/Cormorant-Moonlight*.woff2
+  Cormorant Garamond, Copyright 2015 the Cormorant Project Authors.
+  SIL OFL 1.1; fonts/skins/cormorantgaramond-OFL.txt.
+fonts/skins/Fraunces-Linen*.woff2
+  Fraunces, Copyright 2018 The Fraunces Project Authors.
+  SIL OFL 1.1; fonts/skins/fraunces-OFL.txt.
+fonts/skins/Gaegu-Tape-Bold.woff2
+  Gaegu, Copyright 2018 The Gaegu Project Authors.
+  SIL OFL 1.1; fonts/skins/gaegu-OFL.txt.
+fonts/skins/GowunBatang-Linen-*.woff2
+  Gowun Batang, Copyright 2021 The Gowun Batang Project Authors.
+  SIL OFL 1.1; fonts/skins/gowunbatang-OFL.txt.
+
+The skin font files are renamed (and possibly subset) builds of the upstream
+fonts, shipped with their complete OFL texts; the
+"Riso", "Linen", "Moonlight", "Tape" and "Ribbon" CSS family names are
+application aliases, not claims of authorship. Font software remains under
+the OFL and may not be sold by itself.
+
+Screenshots (assets/screenshots)
+--------------------------------
+Captured from this software with fictional sample data and the CC0 artwork.
+assets/screenshots/pi/ were captured from the real Raspberry Pi display through
+the Chrome DevTools Protocol on 2026-10-19 (synthetic story, CC0 art, public
+research text). Research Guide screenshots contain short text derived from
+English Wikipedia (CC BY-SA 4.0, Wikipedia contributors) and AniList titles.
+Screenshots may otherwise be reused under the MIT license.
+
+No model weights, provider SDKs, provider logos, private photos, recorded
+voices, music or credentials are included. NVIDIA, Nemotron, Nebius, OpenAI,
+GPT, Anthropic, Claude, Google and Gemini are trademarks of their owners and
+are named only to identify integrations.
