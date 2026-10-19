@@ -17,8 +17,8 @@ Everything below was run on 2026-10-20 (KST) on Linux, Python 3.12.3, Node 22.22
 | 9 | **Live** single judge call | `ask-three-en smoke-nemotron --yes` | **PASS** — model listed by `/v1/models`, served model = requested, 362 + 113 tokens, 1.67 s, ≈ $0.0007 ([ask-nemotron-smoke.json](verification/ask-nemotron-smoke.json)) |
 | 10 | **Live** Research Guide writer | `apps/otaku-gallery/scripts/model_smoke.py` | **PASS** — HTTP 200, model validated, strict schema validated, 939 + 934 tokens, 2.84 s, ≈ $0.0037 ([otaku-model-smoke.json](verification/otaku-model-smoke.json)) |
 | 11 | Invalid key is reported, not hidden | `NEBIUS_API_KEY=invalid … smoke-nemotron`; `NebiusWriter.write` | **PASS** — Ask: `nebius_models_http_401`; Research: `nebius_http_401` → page status `evidence_only`, "No AI summary was produced…" |
-| 12 | Public audit over files **and history** with real key values loaded and an external household-term list | `AUDIT_PRIVATE_TERMS=<file outside repo> python scripts/public_audit.py --history` | **PASS** (see final report for counts) |
-| 13 | gitleaks 8.30.1, working tree and Git history | `gitleaks dir .`, `gitleaks git .` | **PASS** — no leaks |
+| 12 | Public audit over files **and history** with real key values loaded and an external household-term list | `AUDIT_PRIVATE_TERMS=<file outside repo> python scripts/public_audit.py --history` | **PASS** — 235 files and 238 history blobs, 0 problems |
+| 13 | gitleaks 8.30.1, working tree and Git history | `gitleaks dir .`, `gitleaks git .` | **PASS** — no leaks (working tree; all 7 commits at the time of the scan) |
 | 14 | Production untouched | process ids/uptime of the home server's English services before/after; no restarts | **PASS** — services kept their original PIDs; tests used ports 18780/18794/18805 |
 
 Rows 7–10 made about seven Nebius requests in total (well under $0.05 at list prices).
