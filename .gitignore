@@ -1,0 +1,27 @@
+# Local environments and state
+.venv/
+.state/
+.env
+.env.*
+!.env.example
+*.sqlite3
+*.db
+*.log
+
+# Python / tooling
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Local-only gallery art (see apps/otaku-gallery/README.md)
+apps/otaku-gallery/media/*
+!apps/otaku-gallery/media/.gitkeep
+
+# Browser check output
+browser-check/
+.DS_Store
