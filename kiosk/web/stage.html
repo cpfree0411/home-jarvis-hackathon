@@ -145,10 +145,10 @@
         document.getElementById('ask-status').innerHTML = !a.reachable ? chip('off', 'not running') :
           a.seats.map(function (x) {
             return chip(x.live ? 'live' : 'demo', esc(x.seat) + (x.live ? ' · live' : ' · demo fixture'));
-          }).join('') + '<br><code>' + esc(a.organizer && a.organizer.model) + '</code>';
+          }).join('') + '<br><code>organizer: ' + esc(a.organizer && a.organizer.model) + '</code>';
         document.getElementById('otaku-status').innerHTML = !o.reachable ? chip('off', 'not running') :
           (o.nemotron_live ? chip('live', 'Nemotron writer · live') : chip('demo', 'no key · source excerpts only')) +
-          '<br><code>' + esc(o.model) + '</code>';
+          '<br><code>model: ' + esc(o.model) + '</code>';
       }).catch(function () {});
     }
     status(); setInterval(status, 5000);

@@ -52,6 +52,9 @@ def read_env_file(path: Path) -> dict[str, str]:
 
 def port_free(host: str, port: int) -> bool:
     with socket.socket() as sock:
+        # Same option the servers use, so sockets lingering in TIME_WAIT after
+        # a restart don't count as busy; a live listener still does.
+        sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
         try:
             sock.bind((host, port))
         except OSError:
@@ -130,7 +133,7 @@ def main(argv=None):
             if not port_free(args.host, port)]
     if busy:
         raise SystemExit("Port already in use: " + ", ".join(busy) +
-                         ". Pick free ones, e.g. --port 18780 --ask-port 18794 --otaku-port 18805.")
+                         ". Choose free ports with --port, --ask-port and --otaku-port.")
 
     procs: list[tuple[str, subprocess.Popen]] = []
 

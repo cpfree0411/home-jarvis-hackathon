@@ -59,3 +59,13 @@ def test_missing_env_file_is_an_error(tmp_path):
     import pytest
     with pytest.raises(SystemExit):
         run_showcase.build_envs(args(tmp_path, env_file=tmp_path / "nope.env"), {})
+
+
+def test_port_check_refuses_a_live_listener_only():
+    import socket
+    with socket.socket() as listener:
+        listener.bind(("127.0.0.1", 0))
+        listener.listen(1)
+        port = listener.getsockname()[1]
+        assert run_showcase.port_free("127.0.0.1", port) is False
+    assert run_showcase.port_free("127.0.0.1", port) is True
