@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home Jarvis Showcase</title>
+  <link rel="icon" href="/web/favicon.svg" type="image/svg+xml">
+  <style>
+    :root {
+      --bg: #101114; --panel: #181a1f; --line: #2a2d35; --ink: #ece8e1; --muted: #9a968f;
+      --accent: #f2c38b; --live: #7ad19a; --demo: #e9b25f; --off: #e07a6b;
+      --radius: 14px;
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; background: var(--bg); color: var(--ink);
+      font: 15px/1.45 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    a { color: var(--accent); }
+    header { display: flex; flex-wrap: wrap; gap: 8px 20px; align-items: baseline;
+      padding: 18px 24px 10px; }
+    header h1 { margin: 0; font-size: 20px; letter-spacing: .02em; }
+    header p { margin: 0; color: var(--muted); flex: 1 1 340px; }
+    main { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 20px; padding: 8px 24px 32px; }
+    @media (max-width: 1100px) { main { grid-template-columns: 1fr; } }
+    @media (max-width: 520px) { header, main { padding-left: 16px; padding-right: 16px; } }
+    .device { background: #050506; border: 1px solid var(--line); border-radius: 22px; padding: 14px;
+      box-shadow: 0 30px 80px rgba(0,0,0,.45); align-self: start; }
+    .screen { position: relative; width: 100%; aspect-ratio: 1024 / 600; overflow: hidden; border-radius: 6px; background: #000; }
+    .screen iframe { position: absolute; left: 0; top: 0; width: 1024px; height: 600px; border: 0; transform-origin: 0 0; }
+    .device-foot { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap;
+      color: var(--muted); font-size: 13px; padding: 10px 4px 0; }
+    aside { display: grid; gap: 14px; align-content: start; }
+    section { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; }
+    section h2 { margin: 0 0 4px; font-size: 13px; text-transform: uppercase; letter-spacing: .08em; color: var(--accent); }
+    section p { margin: 0 0 10px; color: var(--muted); font-size: 13px; }
+    .buttons { display: flex; flex-wrap: wrap; gap: 8px; }
+    button { font: inherit; font-size: 14px; color: var(--ink); background: #23262d; border: 1px solid #343842;
+      border-radius: 10px; padding: 8px 12px; min-height: 40px; cursor: pointer; }
+    button:hover { border-color: var(--accent); }
+    button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    button.say::before { content: "\201C"; color: var(--accent); margin-right: 2px; }
+    button.say::after { content: "\201D"; color: var(--accent); margin-left: 2px; }
+    .sim { display: inline-block; font-size: 11px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase;
+      color: #1a1408; background: var(--demo); border-radius: 999px; padding: 1px 8px; vertical-align: 1px; }
+    dl { margin: 0; display: grid; grid-template-columns: auto 1fr; gap: 6px 10px; font-size: 13px; }
+    dt { color: var(--muted); }
+    dd { margin: 0; }
+    .chip { display: inline-block; border-radius: 999px; padding: 0 8px; font-size: 12px; font-weight: 600; margin: 0 4px 4px 0; }
+    .chip.live { background: rgba(122,209,154,.16); color: var(--live); }
+    .chip.demo { background: rgba(233,178,95,.16); color: var(--demo); }
+    .chip.off { background: rgba(224,122,107,.16); color: var(--off); }
+    code { font-size: 12px; color: #d8d2c6; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Home Jarvis</h1>
+    <p>Public showcase of a Raspberry Pi voice-and-touch home assistant. The screen below runs the real
+       1024×600 kiosk code with fictional sample data. Touch it like the real display.</p>
+  </header>
+  <main>
+    <div>
+      <div class="device">
+        <div class="screen" id="screen">
+          <iframe id="kiosk" src="/web/index.html?profile=otaku" title="Home Jarvis kiosk, 1024 by 600" allow="microphone"></iframe>
+        </div>
+        <div class="device-foot">
+          <span>Kiosk at 1024×600 · <a href="/web/index.html?profile=otaku" target="_blank" rel="noopener">open full size</a></span>
+          <span id="scale"></span>
+        </div>
+      </div>
+    </div>
+    <aside>
+      <section>
+        <h2>Voice agent <span class="sim">Simulated</span></h2>
+        <p>On the Pi, a Gemini Live voice agent drives the screen. These buttons replay the same
+           screen events it sends. No speech or AI runs for them.</p>
+        <div class="buttons">
+          <button class="say" data-s="voice_turn">What can you do?</button>
+          <button data-s="welcome_home">Welcome-home greeting</button>
+        </div>
+      </section>
+      <section>
+        <h2>Week calendar <span class="sim">Sample data</span></h2>
+        <p>Swipe the slats sideways to change week, up to close; tap a day to select it. Events are invented.</p>
+        <div class="buttons">
+          <button class="say" data-s="week_open">What's on this week?</button>
+          <button class="say" data-s="week_focus">When is Alex's demo?</button>
+          <button class="say" data-s="week_move">Move the demo an hour later</button>
+          <button data-s="week_next">Next week</button>
+          <button data-s="week_prev">Last week</button>
+          <button data-s="week_skin">Next skin</button>
+          <button data-s="week_close">Close</button>
+        </div>
+      </section>
+      <section>
+        <h2>NVIDIA Nemotron features</h2>
+        <p><b>OTAKU Research Guide:</b> on the kiosk, tap the artwork, then a topic tag or <i>Research</i>.
+           <b>Ask the Three:</b> opened by voice on the Pi.</p>
+        <div class="buttons">
+          <button class="say" data-s="ask_three">Ask the three</button>
+          <button data-s="gallery_app">Gallery: OTAKU app</button>
+          <button data-s="gallery_renderer">Gallery: renderer only</button>
+        </div>
+        <p style="margin:10px 0 0">Full pages: <a href="/ask-en/" target="_blank" rel="noopener">Ask the Three</a> ·
+           <a href="/otaku-en/?kiosk=1" target="_blank" rel="noopener">OTAKU Gallery</a></p>
+      </section>
+      <section aria-live="polite">
+        <h2>Model status</h2>
+        <dl>
+          <dt>Ask the Three</dt><dd id="ask-status">checking…</dd>
+          <dt>OTAKU Guide</dt><dd id="otaku-status">checking…</dd>
+        </dl>
+        <p style="margin:10px 0 0">Live means a Nebius key is configured on the server, not that a call has succeeded.
+           Each app labels every answer as live or demo.</p>
+      </section>
+      <div class="buttons"><button data-reset>Reset demo</button></div>
+    </aside>
+  </main>
+  <script>
+  (function () {
+    'use strict';
+    var screen = document.getElementById('screen');
+    var frame = document.getElementById('kiosk');
+    function fit() {
+      var s = screen.clientWidth / 1024;
+      frame.style.transform = 'scale(' + s + ')';
+      document.getElementById('scale').textContent = s < 0.999 ? 'scaled ' + Math.round(s * 100) + '%' : 'actual size';
+    }
+    window.addEventListener('resize', fit); fit();
+    function post(path, body) {
+      return fetch(path, { method: 'POST', headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body || {}) }).then(function (r) { return r.json(); });
+    }
+    document.querySelectorAll('[data-s]').forEach(function (b) {
+      b.addEventListener('click', function () { post('/api/demo/scenario', { name: b.dataset.s }); });
+    });
+    document.querySelector('[data-reset]').addEventListener('click', function () {
+      post('/api/demo/reset').then(function () { frame.src = frame.src; });
+    });
+    function chip(cls, text) { return '<span class="chip ' + cls + '">' + text + '</span>'; }
+    function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return '&#' + c.charCodeAt(0) + ';'; }); }
+    function status() {
+      fetch('/api/showcase', { cache: 'no-store' }).then(function (r) { return r.json(); }).then(function (s) {
+        var a = s.ask_the_three, o = s.otaku_gallery;
+        document.getElementById('ask-status').innerHTML = !a.reachable ? chip('off', 'not running') :
+          a.seats.map(function (x) {
+            return chip(x.live ? 'live' : 'demo', esc(x.seat) + (x.live ? ' · live' : ' · demo fixture'));
+          }).join('') + '<br><code>' + esc(a.organizer && a.organizer.model) + '</code>';
+        document.getElementById('otaku-status').innerHTML = !o.reachable ? chip('off', 'not running') :
+          (o.nemotron_live ? chip('live', 'Nemotron writer · live') : chip('demo', 'no key · source excerpts only')) +
+          '<br><code>' + esc(o.model) + '</code>';
+      }).catch(function () {});
+    }
+    status(); setInterval(status, 5000);
+  })();
+  </script>
+</body>
+</html>

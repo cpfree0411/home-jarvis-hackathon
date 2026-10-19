@@ -1,0 +1,1270 @@
+/*
+ * Home Jarvis — Gallery / Room Light renderer.
+ *
+ * Design rule: Jarvis is not an object in the screen, it is a property of the
+ * screen. The gallery itself draws no character, orb, ring, waveform, or
+ * content border. The transient wake wave is a separate screen-level filter;
+ * everything else is expressed as a change to how the photograph is lit, how
+ * deep it sits, and which direction its light is moving.
+ *
+ * Perf rule for the Pi 5: normal gallery state stays unfiltered. The only
+ * filter work is the short, explicit wake-wave window on the visual root.
+ */
+
+/* The neo canary is project-local so Chromium never depends on a system font
+   package or a network font. The original OFL notice is kept beside the TTF. */
+@font-face {
+  font-family: "NanumSquare Neo";
+  src: url("fonts/NanumSquareNeo.ttf") format("truetype");
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: block;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #05070a;
+  cursor: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+body {
+  /* --- Media Surface --- */
+  --media-depth: 1;          /* how deep the photograph sits in the room */
+  --media-shift-y: 0px;
+  --media-blur: 0px;         /* the room's focus; only thinking lets it go */
+  --media-sat: 1;            /* the room's colour; only thinking drains it */
+
+  /* --- Room Light --- */
+  --dir-opacity: 0.10;       /* imaginary window outside the display */
+  --dim-opacity: 0;          /* how far the room has dimmed for a session */
+  --field-opacity: 0;        /* the reaction light itself */
+  --field-scale: 1.55;       /* its base size for the current state */
+  --lift-opacity: 0;         /* photograph becomes cleaner / more open */
+  --sink-opacity: 0;         /* photograph becomes more contained */
+
+  /* --- Caption --- */
+  --caption-opacity: 0;
+  --scrim-opacity: 0;
+
+  /* Room Light changes are always slow enough to read as light, not as UI. */
+  --ease-light: cubic-bezier(0.32, 0.06, 0.22, 1);
+}
+
+/* The SVG filter definition is outside this root. Keeping the root as one
+   composited visual surface lets the wake reaction bend the photo, captions,
+   and any full-screen answer together instead of distorting the gallery image
+   in a separate texture. It is identity and inert at rest. */
+#jarvis-visual-root {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+#jarvis-wake-wave-defs {
+  position: fixed;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+#jarvis-visual-root.is-wake-wave {
+  filter: url("#jarvis-wake-wave-filter");
+  will-change: filter;
+}
+
+/* ==========================================================================
+   Layer 1 — Media Surface
+   ========================================================================== */
+
+#media-surface {
+  position: fixed;
+  inset: 0;
+  z-index: 1;
+  background: #05070a;
+  overflow: hidden;
+  /* Saturation has no spatial component, so unlike the blur it cannot fade
+     the frame's own edges. */
+  filter: saturate(var(--media-sat));
+  transition: filter 1800ms var(--ease-light);
+}
+
+/* Carries the wake shock only. At rest it is an untouched identity scale, so
+   it costs nothing and never interferes with the depth transition that lives
+   on .media-stage. */
+.media-impulse {
+  position: absolute;
+  inset: 0;
+  scale: 1;
+}
+
+.media-stage {
+  position: absolute;
+  inset: 0;
+  /* The overscan lets the photograph move deeper into the room without ever
+     exposing the backdrop at the edges. It also has to be wider than the
+     largest blur radius, because a filtered element fades out at its own
+     boundary — at 1.24 the shallowest state still keeps ~49px of margin
+     beyond the display, comfortably past 3 sigma of a 12px blur. */
+  transform: scale(calc(var(--media-depth) * 1.24))
+             translate3d(0, var(--media-shift-y), 0);
+  transform-origin: 50% 50%;
+  filter: blur(var(--media-blur));
+  transition: transform 1400ms var(--ease-light),
+              filter 1400ms var(--ease-light);
+  will-change: transform, filter;
+}
+
+.media-slot {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 2600ms ease-in-out;
+}
+
+.media-slot.is-active { opacity: 1; }
+
+.media-slot > img,
+.media-slot > video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  display: block;
+}
+
+/* --------------------------------------------------------------------------
+   Directional sine-wave wake surface
+
+   The production wake canvas and its opt-in tuning canaries share this one
+   surface. The adapter owns the host class; it is visible only after the
+   current gallery image has uploaded successfully. The DOM image stays
+   mounted as a no-black-frame fallback.
+   -------------------------------------------------------------------------- */
+#sine-wave-surface {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  width: 100%;
+  height: 100%;
+  display: none;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.media-stage.is-sine-wave-host #sine-wave-surface {
+  display: block;
+}
+
+.media-stage.is-sine-wave-ready .media-slot > img {
+  visibility: hidden;
+}
+
+.media-stage.is-sine-wave-ready #sine-wave-surface {
+  opacity: 1;
+}
+
+/* At strength 0 the WebGL frame and the DOM image are identical. Reveal the
+   image underneath first, then fade only the canvas so the return to the
+   untouched gallery is continuous rather than a hard layer swap. */
+.media-stage.is-sine-wave-ready.is-sine-wave-releasing .media-slot > img {
+  visibility: visible;
+}
+
+.media-stage.is-sine-wave-ready.is-sine-wave-releasing #sine-wave-surface {
+  opacity: 0;
+  transition: opacity 160ms ease-out;
+}
+
+/* Gallery drift. Belongs to the gallery, not to Jarvis, so it is suspended
+   for the whole session: gallery motion must never compete with reaction
+   motion. */
+.media-slot.is-active > img {
+  animation: gallery-drift 52s ease-in-out infinite alternate;
+}
+
+body:not([data-state="idle"]) .media-slot > img {
+  animation-play-state: paused;
+}
+
+@keyframes gallery-drift {
+  from { transform: scale(1.00) translate3d(-0.9%, 0.5%, 0); }
+  to   { transform: scale(1.05) translate3d(1.0%, -0.7%, 0); }
+}
+
+/* ==========================================================================
+   Layer 2 — Room Light / Reaction Surface
+   ========================================================================== */
+
+#light-surface {
+  position: fixed;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+#light-surface > * {
+  position: absolute;
+  inset: -20%;
+}
+
+/* An even dimming of the whole room. This is what makes it unmistakable at a
+   glance that a session is open: the photograph is still there, but the room
+   it hangs in has gone quiet and dark. */
+.light-dim {
+  background: rgb(3, 5, 11);
+  opacity: var(--dim-opacity);
+  transition: opacity 1200ms var(--ease-light);
+}
+
+/* The imaginary light source: broad, directional, offscreen upper-left. */
+.light-directional {
+  background: linear-gradient(
+    118deg,
+    rgba(255, 231, 198, 0.55) 0%,
+    rgba(255, 219, 178, 0.20) 26%,
+    rgba(255, 214, 172, 0.00) 58%,
+    rgba(4, 8, 16, 0.00) 100%
+  );
+  opacity: var(--dir-opacity);
+  transition: opacity 1600ms var(--ease-light);
+}
+
+/* The reaction light. The envelope carries the state (size + presence) and
+   transitions smoothly between states; the two cores carry the motion
+   signature — inward for LISTENING, held for THINKING, outward for SPEAKING.
+   Two cores at opposite phase keep the flow continuous, so a state never
+   restarts with a visible snap. */
+.light-field {
+  opacity: var(--field-opacity);
+  transform: scale(var(--field-scale));
+  transition: opacity 1500ms var(--ease-light), transform 1500ms var(--ease-light);
+  will-change: opacity, transform;
+}
+
+/* Every core gradient MUST be `ellipse farthest-side at 50% 50%` with its
+   final stop fully transparent at 100%.
+
+   With the default `circle` (farthest-corner) sizing, the top and bottom edge
+   midpoints of the box sit at only ~47-53% of the gradient ray, so a great
+   deal of alpha is still left there. The cores are scaled down during their
+   travel, and as soon as a box becomes shorter than the display that residual
+   alpha appears as a hard horizontal band sliding across the picture.
+
+   `ellipse farthest-side` centred at 50% 50% puts all four edge midpoints at
+   exactly 100% of the ray, so the boundary is transparent at every scale. */
+.light-core {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* Broad luminance modulation of the photograph itself — no filters. */
+.light-tone-lift {
+  background: radial-gradient(
+    ellipse 78% 74% at 48% 44%,
+    rgba(255, 246, 232, 0.85) 0%,
+    rgba(255, 240, 220, 0.35) 45%,
+    rgba(255, 236, 214, 0.00) 78%
+  );
+  opacity: var(--lift-opacity);
+  transition: opacity 1600ms var(--ease-light);
+}
+
+.light-tone-sink {
+  background: radial-gradient(
+    ellipse 96% 92% at 50% 50%,
+    rgba(6, 9, 16, 0.00) 30%,
+    rgba(6, 9, 16, 0.30) 72%,
+    rgba(4, 7, 13, 0.46) 100%
+  );
+  opacity: var(--sink-opacity);
+  transition: opacity 1600ms var(--ease-light);
+}
+
+/* ==========================================================================
+   State grammar
+
+   The three states differ in three ways at once, so none of them needs a
+   label to be read:
+
+     geometry   LISTENING is an inward-travelling ring of light
+                THINKING  is a small held body of light
+                SPEAKING  is an outward-travelling wash of light
+     tone       LISTENING neutral   THINKING contained   SPEAKING open
+     depth      the photograph sits deepest while thinking, and comes
+                back toward the viewer while speaking
+   ========================================================================== */
+
+/* IDLE — pure gallery. No visible reaction; only the ambient window light
+   that makes the photograph feel like it is hanging in a real room. */
+body[data-state="idle"] {
+  --media-depth: 1;
+  --dim-opacity: 0;
+  --dir-opacity: 0.09;
+  --field-opacity: 0;
+  --field-scale: 2.20;
+  --lift-opacity: 0;
+  --sink-opacity: 0;
+}
+
+/* WAKE — a short moment: light arrives from outside and the same photograph
+   moves a few percent deeper into the room. Never a cut. */
+body[data-state="wake"] {
+  --media-depth: 0.955;
+  --dim-opacity: 0.34;
+  --dir-opacity: 0.40;
+  --field-opacity: 0.30;
+  --field-scale: 1.69;
+  --lift-opacity: 0.10;
+  --sink-opacity: 0.03;
+}
+
+body[data-state="wake"] .media-stage { transition-duration: 950ms; }
+body[data-state="wake"] .light-field { transition-duration: 950ms; }
+body[data-state="wake"] .light-core[data-core="1"] {
+  background: radial-gradient(
+    ellipse farthest-side at 50% 50%,
+    rgba(255, 244, 225, 0.90) 0%,
+    rgba(255, 233, 203, 0.46) 37%,
+    rgba(255, 222, 186, 0.14) 71%,
+    rgba(255, 216, 176, 0.00) 100%
+  );
+  animation: core-arrive 950ms var(--ease-light) both;
+}
+
+@keyframes core-arrive {
+  from { scale: 1.40; opacity: 0.20; }
+  to   { scale: 1.00; opacity: 1; }
+}
+
+/* ==========================================================================
+   Wake — the exposure beat
+
+   Wake is an EVENT and everything else on this screen is a state, so it is the
+   one moment that is allowed to be abrupt. It is expressed the way a room
+   reacts to something happening in it rather than the way a UI reacts to a
+   click: the whole photograph drops away for a moment, blooms back past its
+   resting brightness, and settles into the listening dim.
+
+   Nothing is drawn. There is no ring, no glow, no geometry and no overlay —
+   the signal is the exposure and depth of the picture that is already there,
+   which is why it reads identically on a dark family photograph, a bright one
+   and a saturated anime frame, and why it cannot look like an effect layered
+   on top of the media.
+
+   Two earlier attempts are worth not repeating. Concentric ripple rings read
+   as a cheap screensaver preset the moment they are visible enough to be
+   useful. A real WebGL displacement of the frame is beautiful up close and
+   invisible at 2-3m: at an amplitude small enough to stay tasteful it is a
+   twitch, and at an amplitude large enough to see across a room the picture
+   looks broken.
+
+   `brightness()` and `saturate()` are safe to animate here for the same
+   reason the saturation transition above is: neither has a spatial component,
+   so unlike `blur()` neither can fade the frame's own edges.
+   ========================================================================== */
+
+/* No `will-change: filter` here on purpose: #media-surface carries a
+   saturate() at all times, so it is already a filtered layer and the hint has
+   nothing left to promote. */
+body.is-waking #media-surface {
+  animation: wake-exposure 980ms cubic-bezier(0.24, 0.62, 0.28, 1) both;
+}
+
+/* The drop is fast and the recovery is slow: a room does not brighten as
+   quickly as it darkens, and the asymmetry is most of what separates this
+   from a flicker. The overshoot past 1.0 on the way back is the part that
+   reads as "it turned toward me" rather than "it blinked".
+
+   Brightness alone pushes the bloom toward white, and at 1.17 that was what
+   the peak actually looked like. The peak is therefore carried almost
+   entirely by colour coming back up, with only a token brightness overshoot
+   behind it. Do not trade this back the other way: past about 1.05 the bloom
+   starts reading as white again on bright content, and none of the wake's
+   recognisability lives here anyway -- that is all in the fall. */
+@keyframes wake-exposure {
+  0%   { filter: saturate(1.00) brightness(1.00); }
+  14%  { filter: saturate(1.06) brightness(0.52); }
+  38%  { filter: saturate(1.18) brightness(1.020); }
+  100% { filter: saturate(1.00) brightness(1.00); }
+}
+
+/* The picture pulls back as the light drops and returns as it blooms, so the
+   beat has a direction in depth and not only in luminance. It resolves at
+   identity scale, so removing the animation is never a step. */
+body.is-waking .media-impulse {
+  will-change: transform;
+  animation: wake-depth 980ms cubic-bezier(0.24, 0.62, 0.28, 1) both;
+}
+
+@keyframes wake-depth {
+  0%   { scale: 1; }
+  14%  { scale: 0.978; }
+  38%  { scale: 1.006; }
+  100% { scale: 1; }
+}
+
+/* LISTENING — convergence. A wide, very soft annulus of slightly cooler
+   light travels from outside the frame toward its centre, over and over.
+   Attentive and directional, but slow enough to sit in front of. */
+body[data-state="listening"] {
+  --media-depth: 0.955;
+  --dim-opacity: 0.38;
+  --dir-opacity: 0.30;
+  --field-opacity: 0.30;
+  --field-scale: 2.24;
+  --lift-opacity: 0.02;
+  --sink-opacity: 0.06;
+}
+
+body[data-state="listening"] .light-core {
+  /* Feather-soft and very broad: the annulus must read as a body of light
+     passing through the room, never as a ring drawn on the screen.
+
+     Every stop must reach full transparency well before the edge of the
+     gradient box. The core is scaled down during its travel, and once the box
+     is smaller than the display any residual alpha left at its boundary shows
+     up as a hard horizontal step sliding across the frame. --field-scale is
+     raised to compensate for the compressed stops. */
+  background: radial-gradient(
+    ellipse farthest-side at 50% 50%,
+    rgba(226, 236, 255, 0.00) 0%,
+    rgba(228, 238, 255, 0.06) 18%,
+    rgba(233, 241, 255, 0.26) 36%,
+    rgba(244, 245, 250, 0.62) 52%,
+    rgba(252, 244, 230, 0.34) 68%,
+    rgba(255, 238, 216, 0.10) 84%,
+    rgba(255, 236, 212, 0.00) 100%
+  );
+  animation: core-converge 8.6s cubic-bezier(0.28, 0.02, 0.34, 1) infinite;
+}
+body[data-state="listening"] .light-core[data-core="2"] {
+  animation-delay: -4.3s;
+}
+
+@keyframes core-converge {
+  0%   { scale: 1.62; opacity: 0; }
+  30%  { scale: 1.30; opacity: 1; }
+  74%  { scale: 0.86; opacity: 0.70; }
+  100% { scale: 0.58; opacity: 0; }
+}
+
+/* THINKING — condensed and alive. The light has arrived and is now held:
+   small, dense, warm, breathing, drifting. Deliberately no spinner, and no
+   acceleration when the model takes longer. */
+body[data-state="thinking"] {
+  --media-depth: 0.940;
+  --dim-opacity: 0.44;
+  --dir-opacity: 0.14;
+  --field-opacity: 0.42;
+  --field-scale: 0.87;
+  --lift-opacity: 0.02;
+  --sink-opacity: 0.12;
+}
+
+/* Four thinking treatments to compare on the real display. Switch at runtime
+   with window.jarvisGallery.setThinking('focus'|'desat'|'both').
+
+   The transition above ramps a blur in over 1400ms; the breathing starts after
+   that, from exactly the value the ramp arrived at, so the loop begins without
+   a step. */
+body[data-think="focus"][data-state="thinking"] { --media-blur: 8px; }
+body[data-think="both"][data-state="thinking"]  { --media-blur: 5px; }
+
+body[data-think="focus"][data-state="thinking"] .media-stage {
+  animation: media-defocus 5.2s ease-in-out 1400ms infinite;
+}
+
+body[data-think="both"][data-state="thinking"] .media-stage {
+  animation: media-defocus-soft 5.2s ease-in-out 1400ms infinite;
+}
+
+@keyframes media-defocus-soft {
+  0%, 100% { filter: blur(5px); }
+  50%      { filter: blur(8px); }
+}
+
+/* Colour draining is a pure transition, so it needs no exit handling. */
+body[data-think="desat"][data-state="thinking"] { --media-sat: 0.28; }
+body[data-think="both"][data-state="thinking"]  { --media-sat: 0.50; }
+
+
+
+@keyframes media-defocus {
+  0%, 100% { filter: blur(8px); }
+  50%      { filter: blur(11px); }
+}
+
+/* Chromium does not carry a transition on from the value a removed animation
+   was sitting at, so leaving thinking would snap back into focus in a single
+   frame. app.js marks the frame for exactly one refocus, and the breathing
+   range is kept narrow (8-11px) so starting this from the midpoint is never
+   more than 1.5px away from where the breath actually was. */
+body.is-refocusing[data-think="focus"] .media-stage {
+  animation: media-refocus 1200ms var(--ease-light) forwards;
+}
+
+body.is-refocusing[data-think="both"] .media-stage {
+  animation: media-refocus-soft 1200ms var(--ease-light) forwards;
+}
+
+@keyframes media-refocus {
+  from { filter: blur(9.5px); }
+  to   { filter: blur(0px); }
+}
+
+@keyframes media-refocus-soft {
+  from { filter: blur(6.5px); }   /* midpoint of media-defocus-soft (5-8px) */
+  to   { filter: blur(0px); }
+}
+
+body[data-state="thinking"] .light-core[data-core="1"] {
+  background: radial-gradient(
+    ellipse farthest-side at 50% 50%,
+    rgba(255, 238, 208, 0.95) 0%,
+    rgba(255, 226, 186, 0.60) 36%,
+    rgba(255, 214, 166, 0.22) 69%,
+    rgba(255, 208, 158, 0.00) 100%
+  );
+  animation:
+    core-breathe 6.6s cubic-bezier(0.45, 0, 0.55, 1) infinite,
+    core-drift 21s ease-in-out infinite alternate;
+}
+body[data-state="thinking"] .light-core[data-core="2"] {
+  background: radial-gradient(
+    ellipse farthest-side at 50% 50%,
+    rgba(255, 236, 206, 0.55) 0%,
+    rgba(255, 224, 184, 0.28) 46%,
+    rgba(255, 212, 164, 0.00) 100%
+  );
+  animation: core-hold 6.6s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+  animation-delay: -3.3s;
+}
+
+@keyframes core-breathe {
+  0%, 100% { scale: 0.90; opacity: 0.66; }
+  50%      { scale: 1.12; opacity: 1; }
+}
+
+/* A second, slower and fainter body of light so the state never reads as a
+   single pulsing shape. */
+@keyframes core-hold {
+  0%, 100% { scale: 1.32; opacity: 0.20; }
+  50%      { scale: 1.06; opacity: 0.44; }
+}
+
+/* The drift is what separates "alive" from "frozen" without giving the eye
+   a moving object to lock onto. */
+@keyframes core-drift {
+  from { translate: -3.4% 2.2%; }
+  to   { translate: 3.6% -2.4%; }
+}
+
+/* SPEAKING — expansion. A warm wash travels outward past the edges of the
+   frame, and the photograph itself becomes cleaner and more open rather than
+   more decorated. */
+body[data-state="speaking"] {
+  --media-depth: 0.988;
+  --dim-opacity: 0.16;
+  --dir-opacity: 0.26;
+  --field-opacity: 0.34;
+  --field-scale: 1.57;
+  --lift-opacity: 0.16;
+  --sink-opacity: 0;
+}
+
+/* Coming back into focus is the reward: the answer has arrived. */
+body[data-state="speaking"] .media-stage {
+  transition: transform 1400ms var(--ease-light),
+              filter 1200ms var(--ease-light);
+}
+
+body[data-state="speaking"] .light-core {
+  background: radial-gradient(
+    ellipse farthest-side at 50% 50%,
+    rgba(255, 246, 230, 0.85) 0%,
+    rgba(255, 238, 213, 0.52) 35%,
+    rgba(255, 228, 192, 0.20) 68%,
+    rgba(255, 222, 182, 0.00) 100%
+  );
+  animation: core-emit 7.6s cubic-bezier(0.16, 0.60, 0.30, 1) infinite;
+}
+body[data-state="speaking"] .light-core[data-core="2"] {
+  animation-delay: -3.8s;
+}
+
+@keyframes core-emit {
+  0%   { scale: 0.52; opacity: 0; }
+  26%  { scale: 0.92; opacity: 1; }
+  64%  { scale: 1.42; opacity: 0.52; }
+  100% { scale: 1.94; opacity: 0; }
+}
+
+/* --------------------------------------------------------------------------
+   Retired pre-wave reaction layer
+
+   The old Room Light treatment (wake exposure, dim/directional wash, depth
+   zoom, listening cores, thinking blur/desaturation, and speaking wash) is no
+   longer part of the visual contract. Keep the historical rules above for
+   reference, but hard-disable their runtime outputs here so every semantic
+   state leaves the gallery untouched. The only state visuals are the validated
+   transient Live-entry wake wave. Future semantic visuals are not enabled.
+   -------------------------------------------------------------------------- */
+body {
+  --media-depth: 1 !important;
+  --media-blur: 0px !important;
+  --media-sat: 1 !important;
+  --dim-opacity: 0 !important;
+  --dir-opacity: 0 !important;
+  --field-opacity: 0 !important;
+  --lift-opacity: 0 !important;
+  --sink-opacity: 0 !important;
+}
+
+#light-surface {
+  display: none !important;
+}
+
+#media-surface {
+  filter: none !important;
+  transition: none !important;
+}
+
+.media-stage {
+  transform: scale(1.24) translate3d(0, 0, 0) !important;
+  filter: none !important;
+  transition: none !important;
+  animation: none !important;
+  will-change: auto;
+}
+
+.media-impulse,
+body.is-waking #media-surface,
+body.is-refocusing .media-stage {
+  animation: none !important;
+}
+
+/* ==========================================================================
+   Layer 3 — Caption Surface
+   ========================================================================== */
+
+#caption-surface {
+  position: fixed;
+  inset: 0;
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* Not a card and not a bar: a subtle ambient gradient veil behind the
+   editorial text and bottom stage to quietly ground contrast without
+   looking like a subtitle bar or hard panel. */
+.caption-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.18) 0%,
+    rgba(0, 0, 0, 0.10) 20%,
+    rgba(0, 0, 0, 0.04) 36%,
+    rgba(0, 0, 0, 0.00) 56%
+  );
+  opacity: var(--scrim-opacity, 0);
+  transition: opacity 360ms cubic-bezier(0.22, 0.65, 0.30, 1);
+}
+
+/* Layer 2b: Cinematic Atmosphere — gradual blur and gentle dimming centered
+   directly behind the caption output zone. Full overscan (inset: -8%) eliminates
+   all rectangular box edges both horizontally and vertically, allowing the
+   radial mask to smoothly feather the optical focus into the artwork. */
+.caption-atmosphere {
+  position: absolute;
+  inset: -8%;
+  pointer-events: none;
+  backdrop-filter: blur(4px) brightness(0.70);
+  -webkit-backdrop-filter: blur(4px) brightness(0.70);
+  mask-image: radial-gradient(
+    ellipse 65% 58% at 50% 48%,
+    rgba(0, 0, 0, 0.80) 0%,
+    rgba(0, 0, 0, 0.76) 24%,
+    rgba(0, 0, 0, 0.46) 48%,
+    rgba(0, 0, 0, 0.18) 72%,
+    rgba(0, 0, 0, 0.03) 88%,
+    transparent 100%
+  );
+  -webkit-mask-image: radial-gradient(
+    ellipse 65% 58% at 50% 48%,
+    rgba(0, 0, 0, 0.80) 0%,
+    rgba(0, 0, 0, 0.76) 24%,
+    rgba(0, 0, 0, 0.46) 48%,
+    rgba(0, 0, 0, 0.18) 72%,
+    rgba(0, 0, 0, 0.03) 88%,
+    transparent 100%
+  );
+  opacity: var(--scrim-opacity, 0);
+  transition: opacity 360ms cubic-bezier(0.22, 0.65, 0.30, 1);
+}
+
+body[data-caption-style="baseline"] .caption-scrim {
+  position: absolute;
+  inset: -10%;
+  background: radial-gradient(
+    ellipse 72% 52% at 50% 50%,
+    rgba(2, 4, 9, 0.70) 0%,
+    rgba(2, 4, 9, 0.60) 28%,
+    rgba(2, 4, 9, 0.38) 54%,
+    rgba(2, 4, 9, 0.15) 78%,
+    rgba(2, 4, 9, 0.00) 100%
+  );
+}
+
+.caption-text {
+  position: absolute;
+  left: 15%;
+  right: 15%;
+  top: 50%;
+  min-height: calc(4 * 1.58em);
+  transform: translateY(-50%);
+  text-align: center;
+  opacity: var(--caption-opacity);
+  transition: opacity 700ms ease;
+}
+
+.caption-line {
+  display: block;
+  width: 100%;
+  min-height: calc(4 * 1.58em);
+  /* NanumBarunGothic is the Korean face installed on the Pi; it only ships
+     Regular and Bold, so weight stays at 400 rather than being synthesised. */
+  font-family: "NanumBarunGothic", "Noto Sans CJK KR", "Noto Sans KR",
+               "Noto Sans", system-ui, sans-serif;
+  font-size: clamp(28px, 3.05vw, 32px);
+  font-weight: 400;
+  line-height: 1.58;
+  letter-spacing: 0.005em;
+  white-space: normal;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  color: rgba(255, 252, 246, 0.95);
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.50), 0 2px 26px rgba(0, 0, 0, 0.72);
+}
+
+/* A page contains only lines that the controller has proven complete. The
+   hidden measurement node still owns wrapping; these committed blocks keep a
+   completed line stable after it has entered the visible page. */
+.caption-page {
+  display: block;
+  width: 100%;
+  max-height: calc(4 * 1.58em);
+  overflow: hidden;
+  text-align: center;
+}
+
+/* A committed physical line is the only visual reveal unit. The text is
+   nowrap because its boundary came from the same hidden Range measurement;
+   later transcription cannot recompose or rewrap this line. */
+.caption-committed-line {
+  display: block;
+  width: 100%;
+  min-height: 1.58em;
+  white-space: nowrap;
+  overflow: hidden;
+  opacity: 0;
+  filter: blur(12px);
+  transform: translate3d(0, 8px, 0);
+  transition:
+    opacity var(--caption-line-duration, 1050ms) cubic-bezier(0.22, 0.65, 0.30, 1),
+    filter var(--caption-line-duration, 1050ms) cubic-bezier(0.22, 0.65, 0.30, 1),
+    transform var(--caption-line-duration, 1050ms) cubic-bezier(0.22, 0.65, 0.30, 1);
+}
+
+.caption-committed-line:not(.is-revealed),
+.caption-line.is-leaving .caption-page {
+  will-change: opacity, filter, transform;
+}
+
+.caption-committed-line.is-revealed {
+  opacity: 1;
+  filter: blur(0);
+  transform: translate3d(0, 0, 0);
+}
+
+/* Pages and the final drain use one quiet whole-page exit. Committed lines are
+   already readable before this starts; the exit does not reveal composing text. */
+.caption-line.is-leaving .caption-page {
+  opacity: 0;
+  filter: blur(10px);
+  transform: translate3d(0, 5px, 0);
+  transition-duration: 520ms;
+}
+
+/* The measurement node receives the same typography as the visible page and
+   asks the browser's Range geometry where the next visual line begins. It
+   never paints; the composing tail exists only here and in logical state. */
+.caption-measure {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  visibility: hidden;
+  pointer-events: none;
+  white-space: normal;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  font-family: "NanumBarunGothic", "Noto Sans CJK KR", "Noto Sans KR",
+               "Noto Sans", system-ui, sans-serif;
+  font-size: clamp(28px, 3.05vw, 32px);
+  font-weight: 400;
+  line-height: 1.58;
+  letter-spacing: 0.005em;
+}
+
+/* ==========================================================================
+   Editorial Caption Styling Canary
+   ========================================================================== */
+
+body[data-caption-style="neo"] .caption-line,
+body[data-caption-style="neo-plain"] .caption-line,
+body[data-caption-style="neo"] .caption-measure,
+body[data-caption-style="neo-plain"] .caption-measure {
+  font-family: "NanumSquare Neo", "NanumBarunGothic", "Noto Sans CJK KR",
+               "Noto Sans KR", "Noto Sans", system-ui, sans-serif;
+  font-size: 34px;
+  line-height: 52px;
+  font-weight: 500;
+  letter-spacing: -0.012em;
+  font-synthesis: weight;
+}
+
+body[data-caption-style="neo"] .caption-text,
+body[data-caption-style="neo-plain"] .caption-text {
+  min-height: calc(4 * 52px + 3 * 6px + 24px);
+  transform: translateY(calc(-50% - 8px));
+}
+
+body[data-caption-style="neo"] .caption-page,
+body[data-caption-style="neo-plain"] .caption-page {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  max-height: calc(4 * 52px + 3 * 6px + 24px);
+  padding-bottom: 12px;
+  overflow: visible;
+}
+
+body[data-caption-style="neo"] .caption-committed-line,
+body[data-caption-style="neo-plain"] .caption-committed-line {
+  position: relative;
+  display: inline-block;
+  width: auto;
+  max-width: 100%;
+  min-height: 52px;
+  line-height: 52px;
+  padding: 0 16px;
+  white-space: nowrap;
+  overflow: visible;
+}
+
+/* Micro-backdrop: Variant 1 (Removed) — Atmosphere provides sufficient contrast */
+body[data-caption-style="neo"] .caption-committed-line::before {
+  display: none;
+}
+
+/* Simplified Warm Ivory Text: constant elegant aesthetic across all backgrounds */
+body[data-caption-style="neo"] .caption-committed-line {
+  color: rgba(255, 248, 242, 0.97);
+  -webkit-text-fill-color: rgba(255, 248, 242, 0.97);
+  -webkit-text-stroke: 0.58px rgba(0, 0, 0, 0.22);
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.30),
+    0 3px 12px rgba(0, 0, 0, 0.20),
+    0 8px 24px rgba(0, 0, 0, 0.14);
+  filter: blur(12px) brightness(1.02);
+  transition:
+    opacity var(--caption-line-duration, 1050ms) cubic-bezier(0.22, 0.65, 0.30, 1),
+    filter var(--caption-line-duration, 1050ms) cubic-bezier(0.22, 0.65, 0.30, 1),
+    transform var(--caption-line-duration, 1050ms) cubic-bezier(0.22, 0.65, 0.30, 1);
+}
+
+/* One entry-only luminance settle. It shares the existing 1050ms physical-line
+   transition and has no loop, shimmer, or post-reveal animation. */
+body[data-caption-style="neo"] .caption-committed-line.is-revealed {
+  filter: blur(0) brightness(1);
+}
+
+/* ==========================================================================
+   Layer 3 — Jarvis State Pill
+
+   This is intentionally a small floating status surface rather than a
+   dashboard control. The host is fixed, so it never participates in gallery
+   layout; its z-index is above the sine-ripple canvas and Visual Answer
+   surface, while the later universal overlay host remains above it at the
+   same stacking level. The two canvas and text layers are swapped by
+   state-pill.js, so Listening → Thinking → Searching never remounts the
+   capsule. */
+
+#state-pill-host {
+  position: fixed;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.jarvis-state-pill {
+  position: absolute;
+  top: clamp(20px, 4.6vh, 34px);
+  left: 50%;
+  display: flex;
+  align-items: center;
+  width: 246px;
+  height: 58px;
+  padding: 10px 18px 10px 12px;
+  gap: 14px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.045);
+  border-radius: 999px;
+  background: rgba(20, 20, 20, 0.76);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.025),
+    0 12px 30px rgba(0, 0, 0, 0.16);
+  opacity: 0;
+  visibility: hidden;
+  transform: translate3d(-50%, -7px, 0) scale(0.98);
+  transition:
+    opacity 220ms cubic-bezier(0.22, 0.65, 0.3, 1),
+    transform 240ms cubic-bezier(0.22, 0.65, 0.3, 1),
+    visibility 0s linear 240ms;
+  will-change: opacity, transform;
+}
+
+.jarvis-state-pill.is-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translate3d(-50%, 0, 0) scale(1);
+  transition:
+    opacity 220ms cubic-bezier(0.22, 0.65, 0.3, 1),
+    transform 240ms cubic-bezier(0.22, 0.65, 0.3, 1),
+    visibility 0s linear 0s;
+}
+
+.jarvis-state-pill.is-entering {
+  visibility: visible;
+  animation: state-pill-enter 340ms cubic-bezier(0.22, 0.90, 0.30, 1) both;
+}
+
+.jarvis-state-pill.is-exiting {
+  visibility: visible;
+  animation: state-pill-exit 320ms cubic-bezier(0.22, 0.65, 0.30, 1) both;
+}
+
+@keyframes state-pill-enter {
+  0% {
+    transform: translate3d(-50%, -64px, 0) scale(0.95);
+    opacity: 0;
+  }
+  72% {
+    transform: translate3d(-50%, 6px, 0) scale(1.01);
+    opacity: 1;
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0) scale(1);
+    opacity: 1;
+  }
+}
+
+@keyframes state-pill-exit {
+  0% {
+    transform: translate3d(-50%, 0, 0) scale(1);
+    opacity: 1;
+  }
+  30% {
+    opacity: 0.90;
+  }
+  100% {
+    transform: translate3d(-50%, -54px, 0) scale(0.96);
+    opacity: 0;
+  }
+}
+
+.jarvis-state-pill-orb-stack {
+  position: relative;
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+}
+
+.jarvis-state-pill-orb-layer {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 36px;
+  height: 36px;
+  opacity: 0;
+  transform: scale(0.90);
+  filter: blur(2px);
+  transition:
+    opacity 300ms cubic-bezier(0.22, 0.65, 0.3, 1),
+    transform 340ms cubic-bezier(0.22, 0.65, 0.3, 1),
+    filter 300ms cubic-bezier(0.22, 0.65, 0.3, 1);
+}
+
+.jarvis-state-pill-orb-layer.is-active {
+  opacity: 1;
+  transform: scale(1);
+  filter: none;
+}
+
+.jarvis-state-pill-copy {
+  position: relative;
+  flex: 1 1 auto;
+  width: 126px;
+  min-width: 126px;
+  height: 24px;
+  /* The label layers only cross-fade in place; let the moving sheen escape
+     the line box so it is not clipped at the text baseline. */
+  overflow: visible;
+}
+
+.jarvis-state-pill-label {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  display: block;
+  width: 100%;
+  color: rgba(232, 232, 232, 0.72);
+  font-family: Inter, "SF Pro Display", "Noto Sans", system-ui, sans-serif;
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: -0.018em;
+  line-height: 24px;
+  white-space: nowrap;
+  opacity: 0;
+  transform: translate3d(0, calc(-50% + 4px), 0);
+  filter: blur(2px);
+  text-shadow: 0 0 0 rgba(240, 240, 240, 0);
+  transition:
+    opacity 300ms cubic-bezier(0.22, 0.65, 0.3, 1),
+    transform 300ms cubic-bezier(0.22, 0.65, 0.3, 1),
+    filter 300ms cubic-bezier(0.22, 0.65, 0.3, 1),
+    color 300ms ease;
+}
+
+.jarvis-state-pill-label.is-current {
+  color: rgba(235, 235, 235, 0.78);
+  opacity: 1;
+  transform: translate3d(0, -50%, 0);
+  filter: none;
+  text-shadow:
+    0 0 6px rgba(235, 235, 235, 0.06),
+    0 0 14px rgba(235, 235, 235, 0.02);
+  animation: jarvis-state-pill-text-shimmer 2.6s ease-in-out infinite;
+}
+
+/* A restrained left-to-right highlight sweep. The long resting sections keep
+   this reading as a premium status cue rather than a permanent neon effect. */
+@keyframes jarvis-state-pill-text-shimmer {
+  0%, 10% {
+    background-position: 100% 50%;
+    color: rgba(235, 235, 235, 0.70);
+    text-shadow:
+      0 0 5px rgba(235, 235, 235, 0.05),
+      0 0 12px rgba(235, 235, 235, 0.015);
+  }
+  50% {
+    background-position: 18% 50%;
+    color: rgba(244, 244, 244, 0.86);
+    text-shadow:
+      0 0 9px rgba(235, 235, 235, 0.16),
+      0 0 20px rgba(235, 235, 235, 0.05);
+  }
+  60% {
+    background-position: 8% 50%;
+    color: rgba(248, 248, 248, 0.94);
+    text-shadow:
+      0 0 11px rgba(235, 235, 235, 0.22),
+      0 0 24px rgba(235, 235, 235, 0.07);
+  }
+  72% {
+    background-position: 0% 50%;
+    color: rgba(248, 248, 248, 0.94);
+    text-shadow:
+      0 0 11px rgba(235, 235, 235, 0.22),
+      0 0 24px rgba(235, 235, 235, 0.07);
+  }
+  100% {
+    background-position: 0% 50%;
+    color: rgba(235, 235, 235, 0.70);
+    text-shadow:
+      0 0 5px rgba(235, 235, 235, 0.05),
+      0 0 12px rgba(235, 235, 235, 0.015);
+  }
+}
+
+/* Chromium supports clipped gradient text, which gives the effect its actual
+   moving highlight. The animated text-shadow above remains as a soft halo and
+   as a graceful fallback for engines without this feature. */
+@supports (-webkit-background-clip: text) {
+  .jarvis-state-pill-label.is-current {
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    background-image: linear-gradient(
+      105deg,
+      rgba(232, 232, 232, 0.70) 0%,
+      rgba(232, 232, 232, 0.70) 38%,
+      rgba(255, 255, 255, 0.98) 49%,
+      rgba(232, 232, 232, 0.70) 60%,
+      rgba(232, 232, 232, 0.70) 100%
+    );
+    background-position: 100% 50%;
+    background-repeat: no-repeat;
+    background-size: 260% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+  }
+}
+
+/* Speaking/output owns the centre of attention. Visual Answers are different:
+   the answer remains the content plane, while only the admitted follow-up
+   Listening pill is allowed to sit above it. app.js invalidates the pill
+   before removing this class on every exit path. */
+body.has-visual-answer #state-pill-host {
+  visibility: hidden;
+}
+
+body.has-visual-answer[data-state="listening"] #state-pill-host {
+  visibility: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .caption-text,
+  .caption-scrim {
+    transition-duration: 1ms;
+  }
+
+  .jarvis-state-pill,
+  .jarvis-state-pill-orb-layer,
+  .jarvis-state-pill-label {
+    transition-duration: 1ms;
+  }
+
+  .jarvis-state-pill.is-entering,
+  .jarvis-state-pill.is-exiting {
+    animation: none;
+  }
+
+  .jarvis-state-pill,
+  .jarvis-state-pill.is-visible {
+    transform: translate3d(-50%, 0, 0) scale(1) !important;
+  }
+
+  .jarvis-state-pill-label.is-current {
+    animation: none;
+  }
+
+  .caption-committed-line,
+  .caption-line.is-leaving .caption-page {
+    filter: none;
+    transform: none;
+    transition-duration: 1ms;
+    will-change: auto;
+  }
+
+  body[data-caption-style="neo"] .caption-committed-line,
+  body[data-caption-style="neo"] .caption-committed-line.is-revealed {
+    filter: none;
+  }
+
+  .caption-line.is-leaving .caption-page {
+    opacity: 0;
+    transition-duration: 180ms;
+  }
+}
+
+/* ==========================================================================
+   Layer 4 — Visual Answer Surface
+   ========================================================================== */
+
+/* The weather document lives in the iframe for the whole life of the kiosk,
+   so while no answer is on screen it must be genuinely inert. `opacity: 0`
+   alone is not: Chromium still rasters and composites the subtree, and the
+   template's five `breathe` animations keep running against a full-screen
+   opaque backdrop forever. `visibility: hidden` takes the layer out of the
+   frame entirely when INACTIVE.
+   Frozen Cross-Dissolve: during EXITING, opacity dissolves 1 -> 0 over ~380ms
+   with a subtle scale (1.0 -> 1.01) while the underlying Gallery remains
+   frozen. */
+#visual-answer-surface {
+  position: fixed;
+  inset: 0;
+  z-index: 4;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: scale(1);
+}
+
+#visual-answer-surface.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: scale(1);
+  will-change: opacity, transform;
+  transition: opacity 380ms cubic-bezier(0.22, 0.65, 0.3, 1),
+              transform 380ms cubic-bezier(0.22, 0.65, 0.3, 1),
+              visibility 0s linear 0s;
+}
+
+#visual-answer-surface.is-exiting,
+#visual-answer-surface.is-active.is-exiting {
+  opacity: 0;
+  visibility: visible;
+  pointer-events: none;
+  transform: scale(1.01);
+  will-change: opacity, transform;
+  transition: opacity 380ms ease-out,
+              transform 380ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #visual-answer-surface.is-active,
+  #visual-answer-surface.is-exiting {
+    transition-duration: 1ms !important;
+    transform: none !important;
+  }
+}
+
+#visual-answer-surface iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  display: none;
+}
+
+#visual-answer-surface[data-kind="weather"] #weather-frame,
+#visual-answer-surface[data-kind="fx"] #fx-frame,
+#visual-answer-surface[data-kind="portfolio"] #portfolio-frame {
+  display: block;
+}
+
+/* Caption precedence: suppress caption surface while visual answer is active */
+body.has-visual-answer #caption-surface {
+  opacity: 0 !important;
+  visibility: hidden !important;
+  pointer-events: none !important;
+}

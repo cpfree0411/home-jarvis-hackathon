@@ -1,0 +1,3 @@
+#ask-overlay{position:absolute;inset:0;z-index:30;background:#eff2f5;pointer-events:auto}
+#ask-overlay.is-inert{display:none;pointer-events:none}
+#ask-overlay iframe{width:100%;height:100%;border:0;display:block;background:#eff2f5}

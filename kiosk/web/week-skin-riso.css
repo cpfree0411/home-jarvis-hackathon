@@ -1,0 +1,143 @@
+@font-face { font-family: "Riso Display"; src: url("fonts/skins/Bricolage-Riso.woff2") format("woff2"); font-weight: 500 800; font-display: block; }
+
+
+/* B — RISO. Playful modernism: every day has its own colour, printed flat
+   like a risograph poster, chunky expressive numerals, deep navy type, soft
+   rounded ends. Touching a day turns it navy and it keeps its colour as ink. */
+
+#week-calendar[data-skin="riso"],
+#week-calendar .wk-skin[data-skin="riso"] {
+  --wk-margin: 14px;
+  --wk-gap: 7px;
+  --wk-radius: 22px;
+  --wk-tab: 148px;
+  --rs-ink: #1f2147;
+  --rs-ink-2: rgba(31, 33, 71, 0.66);
+  --rs-ink-3: rgba(31, 33, 71, 0.42);
+  --wk-who-alex: #1f2147;
+  --wk-who-sam: #1f2147;
+  --wk-who-birthdays: #1f2147;
+  --wk-who-other: #1f2147;
+  color: var(--rs-ink);
+}
+#week-calendar[data-skin="riso"] .wk-tone { background: rgba(255, 250, 240, 0.0); }
+
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar:nth-child(1) { --day: #f6b6a3; }
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar:nth-child(2) { --day: #f8d478; }
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar:nth-child(3) { --day: #b6dcbc; }
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar:nth-child(4) { --day: #a3c8ee; }
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar:nth-child(5) { --day: #cbbdf2; }
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar:nth-child(6) { --day: #8ed4d4; }
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar:nth-child(7) { --day: #f6a3bb; }
+
+#week-calendar .wk-skin[data-skin="riso"] .wk-fill {
+  background: var(--day);
+  box-shadow: none;
+}
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar { color: var(--rs-ink); }
+#week-calendar .wk-skin[data-skin="riso"] .wk-tab { padding-left: 26px; gap: 10px; }
+#week-calendar .wk-skin[data-skin="riso"] .wk-tab::after { display: none; }
+
+#week-calendar .wk-skin[data-skin="riso"] .wk-num {
+  font-family: "Riso Display", "Jarvis Week", sans-serif;
+  font-variation-settings: "opsz" 96;
+  font-weight: 800;
+  font-size: 48px;
+  letter-spacing: -0.05em;
+  min-width: 60px;
+}
+#week-calendar .wk-skin[data-skin="riso"] .wk-wd { font-size: 18px; font-weight: 700; }
+#week-calendar .wk-skin[data-skin="riso"] .wk-sub { color: var(--rs-ink-2); font-size: 12px; font-weight: 700; }
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-sat .wk-num,
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-sat .wk-wd,
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-sun .wk-num,
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-sun .wk-wd,
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-holiday .wk-num,
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-holiday .wk-wd { color: var(--rs-ink); }
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-holiday .wk-sub { color: #b8233f; }
+
+/* Today: a navy ring printed inside the slat and a "Today" sticker. */
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-today .wk-tabfill { display: none; }
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-today .wk-fill { box-shadow: inset 0 0 0 3px var(--rs-ink); }
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-today .wk-num,
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-today .wk-wd { color: var(--rs-ink); }
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-today .wk-sub {
+  color: var(--day);
+  background: var(--rs-ink);
+  padding: 4px 7px 3px;
+  border-radius: 99px;
+  max-width: none;
+}
+
+/* The past fades like an older print. */
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-past .wk-fill { filter: saturate(0.7) brightness(1.07); }
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-past .wk-face { opacity: 0.55; }
+
+#week-calendar .wk-skin[data-skin="riso"] .wk-ev-title { font-size: 19px; font-weight: 700; letter-spacing: -0.02em; }
+#week-calendar .wk-skin[data-skin="riso"] .wk-ev-when { color: var(--rs-ink-2); font-size: 13px; font-weight: 700; letter-spacing: 0.01em; }
+#week-calendar .wk-skin[data-skin="riso"] .wk-ev-who,
+#week-calendar .wk-skin[data-skin="riso"] .wk-ev-flag { color: var(--rs-ink-3); }
+/* Owners by shape, not colour: the slat already has one. */
+#week-calendar .wk-skin[data-skin="riso"] .wk-ev-mark { width: 8px; height: 8px; border-radius: 50%; background: var(--rs-ink); box-sizing: border-box; }
+#week-calendar .wk-skin[data-skin="riso"] .wk-ev[data-who="sam"] .wk-ev-mark { background: transparent; border: 2px solid var(--rs-ink); }
+#week-calendar .wk-skin[data-skin="riso"] .wk-ev[data-who="birthdays"] .wk-ev-mark { border-radius: 1px; transform: rotate(45deg); }
+#week-calendar .wk-skin[data-skin="riso"] .wk-empty { color: var(--rs-ink-3); font-weight: 700; }
+#week-calendar .wk-skin[data-skin="riso"] .wk-more {
+  color: var(--day); background: var(--rs-ink); border: 0; border-radius: 99px;
+  padding: 7px 13px; margin-left: 14px; font-family: "Riso Display", "Jarvis Week", sans-serif; font-weight: 800;
+}
+#week-calendar .wk-skin[data-skin="riso"] .wk-ribbon { background: transparent; height: 3px; border-radius: 3px; left: 26px; right: 26px; bottom: 8px; }
+#week-calendar .wk-skin[data-skin="riso"] .wk-ribbon i { background: var(--rs-ink) !important; opacity: 0.22; border-radius: 3px; }
+#week-calendar .wk-skin[data-skin="riso"] .wk-ribbon b { background: #e0244e; height: 9px; top: -3px; width: 3px; }
+
+/* Selection: the slat goes navy and keeps its colour in the type. */
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-selected { color: var(--day); }
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-selected .wk-fill { background: var(--rs-ink); filter: none; }
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-selected .wk-num,
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-selected .wk-wd { color: var(--day); }
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-selected .wk-ev-when,
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-selected .wk-sub,
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-selected .wk-ev-who,
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-selected .wk-ev-flag,
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-selected .wk-empty { color: var(--day); opacity: 0.75; }
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-selected.is-today .wk-sub { background: var(--day); color: var(--rs-ink); opacity: 1; }
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-selected.is-past .wk-face { opacity: 0.8; }
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-selected .wk-ev-mark { background: var(--day); }
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-selected .wk-ev[data-who="sam"] .wk-ev-mark { background: transparent; border-color: var(--day); }
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-selected .wk-more { background: var(--day); color: var(--rs-ink); }
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-selected .wk-ribbon { background: transparent; }
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-selected .wk-ribbon i { background: var(--day) !important; }
+#week-calendar .wk-skin[data-skin="riso"] .wk-ev { border-radius: 14px; }
+#week-calendar .wk-skin[data-skin="riso"] .wk-ev.is-focused { background: var(--rs-ink); color: var(--day); }
+#week-calendar .wk-skin[data-skin="riso"] .wk-ev.is-focused .wk-ev-when { color: var(--day); }
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-selected .wk-ev.is-focused { background: var(--day); color: var(--rs-ink); }
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-selected .wk-ev.is-focused .wk-ev-when { color: var(--rs-ink); opacity: 0.7; }
+
+/* ---- production additions ---- */
+/* Rounded slats slide in rather than stretch, so their ends stay round. */
+#week-calendar .wk-skin[data-skin="riso"] { --wk-sweep: slide; }
+#week-calendar .wk-skin[data-skin="riso"] .wk-ev-when { color: rgba(31, 33, 71, 0.74); }
+#week-calendar .wk-skin[data-skin="riso"] .wk-ev-who,
+#week-calendar .wk-skin[data-skin="riso"] .wk-ev-flag { color: rgba(31, 33, 71, 0.55); }
+#week-calendar .wk-skin[data-skin="riso"] .wk-sub { color: rgba(31, 33, 71, 0.72); }
+#week-calendar .wk-skin[data-skin="riso"] .wk-empty { color: rgba(31, 33, 71, 0.5); }
+#week-calendar .wk-skin[data-skin="riso"] .wk-empty.is-error { color: var(--rs-ink); }
+
+#week-calendar .wk-skin[data-skin="riso"] .wk-ask,
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-selected[data-ask] .wk-ask { color: var(--day); }
+#week-calendar .wk-skin[data-skin="riso"] .wk-ask-kicker { color: var(--day); opacity: 0.85; letter-spacing: 0.04em; }
+#week-calendar .wk-skin[data-skin="riso"] .wk-ask-arrow { color: var(--day); }
+#week-calendar .wk-skin[data-skin="riso"] .wk-btn { border-radius: 99px; }
+#week-calendar .wk-skin[data-skin="riso"] .wk-btn[data-choice="confirm"],
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar:not(.is-selected) .wk-btn[data-choice="confirm"] { background: var(--day); color: var(--rs-ink); }
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar[data-ask="delete"] .wk-btn[data-choice="confirm"] { background: #ef5a74; color: #fff5f7; }
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar[data-ask-result="failed"] .wk-ask-status { color: #ff9cb0; }
+#week-calendar .wk-skin[data-skin="riso"] .wk-progress { left: 26px; right: 26px; bottom: 4px; border-radius: 3px; }
+#week-calendar .wk-skin[data-skin="riso"] .wk-progress i { background: var(--day); }
+#week-calendar .wk-skin[data-skin="riso"] .wk-ev.is-ghost { outline: 2px dashed var(--rs-ink); outline-offset: -2px; }
+#week-calendar .wk-skin[data-skin="riso"] .wk-ev.is-ghost .wk-ev-when { color: var(--rs-ink); }
+#week-calendar .wk-skin[data-skin="riso"] .wk-bar.is-focus .wk-fill { box-shadow: inset 0 0 0 3px var(--rs-ink); }
+#week-calendar .wk-skin[data-skin="riso"] .wk-ev.is-focus .wk-ev-title { text-decoration-color: var(--rs-ink); text-decoration-thickness: 3px; }
+#week-calendar[data-skin="riso"] .wk-note { background: #1f2147; color: #f8d478; border-radius: 99px; padding: 10px 22px; }
+#week-calendar[data-skin="riso"] .wk-fly .wk-ev { background: #1f2147; color: #f8d478; border-radius: 14px; }
+#week-calendar[data-skin="riso"] .wk-fly .wk-ev .wk-ev-when { color: rgba(248, 212, 120, 0.75); }

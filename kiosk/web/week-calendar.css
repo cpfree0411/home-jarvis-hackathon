@@ -1,0 +1,578 @@
+/*
+ * Home Jarvis — Weekly Calendar Visual Reaction ("seven slats").
+ *
+ * Seven opaque slats lie across the artwork like the slats of a blind. The
+ * gallery is never replaced or dimmed: it stays visible through the thin
+ * gaps between the slats and around the margin, and the slats themselves are
+ * solid enough that no photograph — white sky or black night — can take the
+ * text away. There is no header, no toolbar, no button row: the dates, the
+ * events and one vermilion "today" tab are the whole composition.
+ *
+ * Perf rule for the Pi 5: entrance, week turn and exit animate transform and
+ * opacity only (Web Animations, composited). No backdrop-filter, no blur, no
+ * box-shadow animation. Selection changes colour on one slat at a time. When
+ * closed, the subtree is display:none and empty.
+ */
+
+@font-face {
+  font-family: "Jarvis Week";
+  src: url("fonts/NanumSquareNeo.ttf") format("truetype");
+  font-weight: 400;
+  font-display: block;
+}
+
+@font-face {
+  font-family: "Jarvis Week";
+  src: url("fonts/NanumSquareNeo-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-display: block;
+}
+
+#week-calendar {
+  /* Ink and paper. Warm, not blue-black; ivory, not white. */
+  --wk-ink: #131417;
+  --wk-ink-2: #1a1c20;
+  --wk-paper: #efe9de;
+  --wk-paper-ink: #17181b;
+  --wk-text: #f1ece3;
+  --wk-dim: rgba(241, 236, 227, 0.58);
+  --wk-faint: rgba(241, 236, 227, 0.30);
+  --wk-rule: rgba(241, 236, 227, 0.09);
+
+  /* One strong colour, used once: today. */
+  --wk-accent: #e4572e;
+  --wk-accent-ink: #1a0e0a;
+
+  /* Korean calendar convention, softened for a living room. */
+  --wk-sat: #8fb7e6;
+  --wk-sun: #ef8676;
+
+  /* Whose event it is — a small square, never a coloured block. */
+  --wk-who-alex: #d7b36e;
+  --wk-who-sam: #e79a92;
+  --wk-who-birthdays: #93c4a2;
+  --wk-who-other: #9fb2c8;
+
+  --wk-margin: 12px;
+  --wk-gap: 6px;
+  --wk-tab: 140px;
+  --wk-radius: 5px;
+
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: auto;
+  font-family: "Jarvis Week", "NanumSquare Neo", sans-serif;
+  color: var(--wk-text);
+  -webkit-font-smoothing: antialiased;
+  font-kerning: normal;
+  contain: strict;
+}
+
+#week-calendar.is-inert { display: none; }
+#week-calendar.is-pre .wk-fill { transform: scaleX(0); }
+#week-calendar.is-pre .wk-face,
+#week-calendar.is-pre .wk-tone { opacity: 0; }
+
+/* The state pill must still be able to say "I'm listening" while the week is
+   on screen: waking Jarvis over the panel is part of the experience. */
+body[data-week-calendar="open"] #state-pill-host { z-index: 9; }
+
+/* A quiet tone over the artwork so the slats read as one composition; the
+   picture itself stays exactly as it was and shows through the gaps. */
+.wk-tone {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 10, 12, 0.34);
+  pointer-events: none;
+  transition: background-color 600ms ease;
+}
+
+/* The previous skin's print during a skin change; never touchable. */
+.wk-stack.wk-ghost { pointer-events: none; }
+
+.wk-stack {
+  position: absolute;
+  top: var(--wk-margin);
+  right: var(--wk-margin);
+  bottom: var(--wk-margin);
+  left: var(--wk-margin);
+  display: grid;
+  grid-template-rows: repeat(7, 1fr);
+  row-gap: var(--wk-gap);
+  transition: grid-template-rows 340ms cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: transform;
+}
+
+/* ------------------------------------------------------------------ slat */
+
+.wk-bar {
+  position: relative;
+  min-height: 0;
+  border-radius: var(--wk-radius);
+  overflow: hidden;
+  color: var(--wk-text);
+  transition: color 240ms ease;
+}
+
+/* The slat's body is its own element so the entrance can sweep it out of
+   the left edge with a pure scaleX while the type above it stays undistorted. */
+.wk-fill {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--wk-radius);
+  background: var(--wk-ink);
+  /* One hairline so an ink slat still has an edge on a night photograph. */
+  box-shadow: inset 0 0 0 1px rgba(241, 236, 227, 0.06);
+  transform-origin: 0 50%;
+  transition: background-color 260ms ease;
+}
+
+.wk-face {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: stretch;
+  will-change: transform, opacity;
+}
+
+/* ------------------------------------------------------------- date tab */
+
+.wk-tab {
+  position: relative;
+  flex: 0 0 var(--wk-tab);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 0 0 20px;
+  box-sizing: border-box;
+}
+
+.wk-tab::after {
+  content: "";
+  position: absolute;
+  top: 14px;
+  bottom: 14px;
+  right: 0;
+  width: 1px;
+  background: var(--wk-rule);
+}
+
+.wk-tabfill {
+  position: absolute;
+  inset: 0;
+  background: var(--wk-accent);
+  transform-origin: 0 50%;
+  transform: scaleX(0);
+  border-radius: var(--wk-radius) 0 0 var(--wk-radius);
+}
+
+.wk-num {
+  position: relative;
+  min-width: 52px;
+  font-size: 42px;
+  line-height: 1;
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  font-variant-numeric: tabular-nums;
+  text-align: left;
+}
+
+.wk-tabmeta {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.wk-wd {
+  font-size: 17px;
+  line-height: 1;
+  font-weight: 700;
+}
+
+.wk-sub {
+  font-size: 11.5px;
+  line-height: 1;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  color: var(--wk-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 62px;
+}
+
+.wk-bar.is-sat .wk-num,
+.wk-bar.is-sat .wk-wd { color: var(--wk-sat); }
+.wk-bar.is-sun .wk-num,
+.wk-bar.is-sun .wk-wd,
+.wk-bar.is-holiday .wk-num,
+.wk-bar.is-holiday .wk-wd { color: var(--wk-sun); }
+.wk-bar.is-holiday .wk-sub { color: var(--wk-sun); }
+
+/* Today: the one block of colour on the screen. */
+.wk-bar.is-today .wk-tabfill { transform: scaleX(1); }
+.wk-bar.is-today .wk-tab::after { display: none; }
+.wk-bar.is-today .wk-num,
+.wk-bar.is-today .wk-wd,
+.wk-bar.is-today .wk-sub { color: var(--wk-accent-ink); }
+
+/* A day that has already happened recedes; it is still all there. */
+.wk-bar.is-past .wk-face { opacity: 0.5; }
+
+/* ------------------------------------------------------------ event lane */
+
+.wk-lane {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  padding: 0 18px 0 24px;
+}
+
+.wk-evs {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  column-gap: 34px;
+  row-gap: 10px;
+  min-width: 0;
+  flex: 1 1 auto;
+  overflow: hidden;
+  padding: 6px 0 8px;
+}
+
+.wk-ev {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 0 0 auto;
+  max-width: 270px;
+  min-width: 0;
+  padding: 7px 11px;
+  margin: -7px -11px;
+  border-radius: 4px;
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+.wk-ev[hidden] { display: none; }
+
+.wk-ev-when {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  line-height: 1;
+  font-weight: 400;
+  letter-spacing: 0.02em;
+  font-variant-numeric: tabular-nums;
+  color: var(--wk-dim);
+  white-space: nowrap;
+}
+
+.wk-ev-mark {
+  flex: 0 0 auto;
+  width: 7px;
+  height: 7px;
+  border-radius: 1.5px;
+  background: var(--wk-who-other);
+}
+
+.wk-ev[data-who="alex"] .wk-ev-mark { background: var(--wk-who-alex); }
+.wk-ev[data-who="sam"] .wk-ev-mark { background: var(--wk-who-sam); }
+.wk-ev[data-who="birthdays"] .wk-ev-mark { background: var(--wk-who-birthdays); }
+
+.wk-ev-who { color: var(--wk-faint); }
+.wk-ev-who::before { content: "· "; }
+
+.wk-ev-flag {
+  color: var(--wk-faint);
+  font-size: 12px;
+}
+
+.wk-ev-title {
+  font-size: 20px;
+  line-height: 1.1;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
+}
+
+.wk-empty {
+  font-size: 14px;
+  color: var(--wk-faint);
+  letter-spacing: 0.02em;
+}
+
+.wk-empty.is-error { color: var(--wk-dim); font-size: 16px; }
+
+.wk-more {
+  flex: 0 0 auto;
+  margin-left: 18px;
+  padding: 10px 2px 10px 18px;
+  border-left: 1px solid var(--wk-rule);
+  font-size: 19px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: var(--wk-dim);
+}
+.wk-more[hidden] { display: none; }
+
+/* The day as a line: when it is busy, and — on today — where "now" is. */
+.wk-ribbon {
+  position: absolute;
+  left: 24px;
+  right: 18px;
+  bottom: 8px;
+  height: 2px;
+  background: rgba(241, 236, 227, 0.05);
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+.wk-ribbon i {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-radius: 1px;
+  background: var(--wk-who-other);
+  opacity: 0.75;
+}
+.wk-ribbon i[data-who="alex"] { background: var(--wk-who-alex); }
+.wk-ribbon i[data-who="sam"] { background: var(--wk-who-sam); }
+.wk-ribbon i[data-who="birthdays"] { background: var(--wk-who-birthdays); }
+.wk-ribbon b {
+  position: absolute;
+  top: -3px;
+  width: 2px;
+  height: 8px;
+  margin-left: -1px;
+  background: var(--wk-accent);
+  border-radius: 1px;
+}
+
+/* -------------------------------------------------------------- selection */
+
+/* A selected day turns to paper. Nothing else on the screen moves. */
+.wk-bar.is-selected { color: var(--wk-paper-ink); }
+.wk-bar.is-selected .wk-fill { background: var(--wk-paper); }
+.wk-bar.is-selected .wk-ev-when,
+.wk-bar.is-selected .wk-sub,
+.wk-bar.is-selected .wk-more { color: rgba(23, 24, 27, 0.58); }
+.wk-bar.is-selected .wk-ev-who,
+.wk-bar.is-selected .wk-ev-flag,
+.wk-bar.is-selected .wk-empty { color: rgba(23, 24, 27, 0.4); }
+.wk-bar.is-selected .wk-tab::after,
+.wk-bar.is-selected .wk-more { border-color: rgba(23, 24, 27, 0.12); }
+.wk-bar.is-selected .wk-tab::after { background: rgba(23, 24, 27, 0.12); }
+.wk-bar.is-selected .wk-ribbon { background: rgba(23, 24, 27, 0.07); }
+.wk-bar.is-selected.is-past .wk-face { opacity: 0.72; }
+.wk-bar.is-selected.is-sat .wk-num,
+.wk-bar.is-selected.is-sat .wk-wd { color: #2f6db0; }
+.wk-bar.is-selected.is-sun .wk-num,
+.wk-bar.is-selected.is-sun .wk-wd,
+.wk-bar.is-selected.is-holiday .wk-num,
+.wk-bar.is-selected.is-holiday .wk-wd,
+.wk-bar.is-selected.is-holiday .wk-sub { color: #c8452f; }
+.wk-bar.is-selected.is-today .wk-num,
+.wk-bar.is-selected.is-today .wk-wd,
+.wk-bar.is-selected.is-today .wk-sub { color: var(--wk-accent-ink); }
+
+/* A selected event is the same idea one level down: it inverts against
+   whatever slat it sits on. */
+.wk-ev.is-focused { background: var(--wk-paper); color: var(--wk-paper-ink); }
+.wk-ev.is-focused .wk-ev-when { color: rgba(23, 24, 27, 0.6); }
+.wk-ev.is-focused .wk-ev-who,
+.wk-ev.is-focused .wk-ev-flag { color: rgba(23, 24, 27, 0.42); }
+.wk-bar.is-selected .wk-ev.is-focused { background: var(--wk-paper-ink); color: var(--wk-text); }
+.wk-bar.is-selected .wk-ev.is-focused .wk-ev-when { color: var(--wk-dim); }
+.wk-bar.is-selected .wk-ev.is-focused .wk-ev-who,
+.wk-bar.is-selected .wk-ev.is-focused .wk-ev-flag { color: var(--wk-faint); }
+
+/* An opened day lets its events wrap onto more lines. */
+.wk-bar.is-open .wk-evs { flex-wrap: wrap; align-content: center; }
+
+/* ------------------------------------------------------- voice spotlight */
+
+/* When Jarvis answers a question about specific days, those days keep full
+   strength and the rest of the week steps back. */
+#week-calendar.has-focus .wk-bar:not(.is-focus):not(.is-selected) .wk-face { opacity: 0.36; }
+.wk-bar.is-focus .wk-fill { box-shadow: inset 4px 0 0 0 var(--wk-accent), inset 0 0 0 1px rgba(241, 236, 227, 0.06); }
+.wk-ev.is-focus .wk-ev-title {
+  text-decoration: underline;
+  text-decoration-color: var(--wk-accent);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 5px;
+}
+
+/* --------------------------------------------------------- change asking */
+
+.wk-ask {
+  position: absolute;
+  inset: 0 0 0 var(--wk-tab);
+  display: none;
+  align-items: center;
+  gap: 18px;
+  padding: 0 14px 0 24px;
+  color: var(--wk-text);
+}
+
+.wk-bar[data-ask] .wk-lane { visibility: hidden; }
+.wk-bar[data-ask] .wk-ask { display: flex; }
+.wk-bar.is-selected[data-ask] .wk-ask { color: var(--wk-paper-ink); }
+
+.wk-ask-copy {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.wk-ask-kicker {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  color: var(--wk-accent);
+  font-weight: 700;
+}
+
+.wk-ask-title {
+  font-size: 22px;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wk-ask-change {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.wk-ask-from { opacity: 0.55; }
+.wk-ask-arrow { color: var(--wk-accent); font-weight: 700; }
+.wk-ask-to { font-weight: 700; }
+
+.wk-ask-actions {
+  flex: 0 0 auto;
+  display: flex;
+  gap: 120px;
+}
+
+.wk-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 128px;
+  height: 52px;
+  border-radius: 4px;
+  font-size: 18px;
+  font-weight: 700;
+  box-sizing: border-box;
+  transition: transform 120ms ease, background-color 160ms ease;
+}
+.wk-btn[data-choice="cancel"] {
+  border: 1px solid currentColor;
+  opacity: 0.8;
+}
+.wk-btn[data-choice="confirm"] {
+  background: var(--wk-paper-ink);
+  color: var(--wk-text);
+}
+.wk-bar:not(.is-selected) .wk-btn[data-choice="confirm"] {
+  background: var(--wk-paper);
+  color: var(--wk-paper-ink);
+}
+.wk-bar[data-ask="delete"] .wk-btn[data-choice="confirm"] {
+  background: #c9533d;
+  color: #fff6ef;
+}
+.wk-btn.is-pressed { transform: scale(0.96); }
+
+.wk-bar[data-ask-mode="executing"] .wk-ask-actions,
+.wk-bar[data-ask-mode="result"] .wk-ask-actions { display: none; }
+
+.wk-ask-status {
+  display: none;
+  font-size: 17px;
+  font-weight: 700;
+}
+.wk-bar[data-ask-mode="executing"] .wk-ask-status,
+.wk-bar[data-ask-mode="result"] .wk-ask-status { display: block; }
+.wk-bar[data-ask-result="failed"] .wk-ask-status { color: #e98a78; }
+.wk-bar.is-selected[data-ask-result="failed"] .wk-ask-status { color: #b8402b; }
+
+/* A change in flight: one quiet line moving along the slat's foot. */
+.wk-progress {
+  position: absolute;
+  left: var(--wk-tab);
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  overflow: hidden;
+  display: none;
+}
+.wk-bar[data-ask-mode="executing"] .wk-progress { display: block; }
+.wk-progress i {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 30%;
+  background: var(--wk-accent);
+  animation: wk-progress 1100ms cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+@keyframes wk-progress {
+  from { transform: translateX(-100%); }
+  to { transform: translateX(340%); }
+}
+
+/* Where a moving event would land. */
+.wk-ev.is-ghost {
+  outline: 1px dashed var(--wk-accent);
+  outline-offset: -1px;
+}
+.wk-ev.is-ghost .wk-ev-when { color: var(--wk-accent); }
+
+/* ----------------------------------------------------------- status note */
+
+.wk-note {
+  position: absolute;
+  left: 50%;
+  bottom: 22px;
+  transform: translateX(-50%);
+  padding: 10px 18px;
+  border-radius: 4px;
+  background: var(--wk-paper);
+  color: var(--wk-paper-ink);
+  font-size: 15px;
+  font-weight: 700;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 220ms ease;
+  pointer-events: none;
+}
+.wk-note[data-shown="yes"] { opacity: 1; }
+
+/* Flying copies used to show an event moving between days. */
+.wk-fly {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+.wk-fly .wk-ev {
+  position: absolute;
+  margin: 0;
+  background: var(--wk-paper);
+  color: var(--wk-paper-ink);
+}
+.wk-fly .wk-ev .wk-ev-when { color: rgba(23, 24, 27, 0.6); }

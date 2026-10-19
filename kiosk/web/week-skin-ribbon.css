@@ -1,0 +1,201 @@
+@font-face { font-family: "Ribbon Serif"; src: url("fonts/skins/Fraunces-Linen.woff2") format("woff2"); font-weight: 300 600; font-style: normal; font-display: block; }
+
+/* The face colour is registered so a touched ribbon can turn over smoothly. */
+@property --rb-face { syntax: "<color>"; inherits: true; initial-value: #efe6d4; }
+@property --rb-flap { syntax: "<color>"; inherits: true; initial-value: #e2d6c0; }
+
+
+/* E — PAPER RIBBON. Seven ribbons of thick stationery card laid across the
+   picture, one quiet colour each. Every ribbon is folded back at the date (a
+   crease and a slightly darker flap), cut into a swallowtail at the far end,
+   bowed a little toward the light, and has a real edge: you can see the
+   card's thickness and the small shadow it throws. Today's flap is
+   vermilion; the day you touch turns over to its ink-blue back. */
+
+#week-calendar[data-skin="ribbon"],
+#week-calendar .wk-skin[data-skin="ribbon"] {
+  --wk-margin: 14px;
+  --wk-gap: 7px;
+  --wk-radius: 0px;
+  --wk-tab: 150px;
+  --rb-ink: #2a2520;
+  --rb-ink-2: rgba(42, 37, 32, 0.74);
+  --rb-ink-3: rgba(42, 37, 32, 0.54);
+  --rb-back: #2e3850;
+  --rb-back-ink: #f4ead6;
+  --rb-red: #c9553b;
+  --rb-red-ink: #fff3e4;
+  --rb-edge: 3px;      /* the card's visible thickness */
+  --rb-drop: 3px;      /* the shadow it throws below */
+  --rb-notch: 17px;
+  --wk-who-alex: #2a2520;
+  --wk-who-sam: #2a2520;
+  --wk-who-birthdays: #2a2520;
+  --wk-who-other: #2a2520;
+  --rb-tooth: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='t'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='2' seed='11' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.3 0 0 0 0 0.22 0 0 0 0 0.12 0 0 0 0.9 -0.42'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23t)'/%3E%3C/svg%3E");
+  color: var(--rb-ink);
+}
+#week-calendar[data-skin="ribbon"] .wk-tone { background: rgba(40, 28, 16, 0.12); }
+
+/* Stationery card: deeper and more matte than the tape's washi. */
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar:nth-child(1) { --day: #e4b8a0; --flap: #d8a68c; }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar:nth-child(2) { --day: #ead196; --flap: #dcbf7f; }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar:nth-child(3) { --day: #bccdaa; --flap: #a9bc95; }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar:nth-child(4) { --day: #afc3d6; --flap: #9cb1c6; }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar:nth-child(5) { --day: #cbbad2; --flap: #b9a6c2; }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar:nth-child(6) { --day: #a6cac2; --flap: #92b8af; }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar:nth-child(7) { --day: #e3b0b4; --flap: #d49ca1; }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar { --rb-face: var(--day); --rb-flap: var(--flap); transition: color 240ms ease, --rb-face 260ms ease, --rb-flap 260ms ease; }
+
+#week-calendar .wk-skin[data-skin="ribbon"] { --wk-sweep: scale; }
+
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-fill {
+  border-radius: 0;
+  /* a bias cut where the ribbon starts, a swallowtail where it ends */
+  clip-path: polygon(6px 0, 100% 0, calc(100% - var(--rb-notch)) 50%, 100% 100%, 0 100%);
+  background:
+    /* paper tooth over the face */
+    var(--rb-tooth) 0 0 / 180px 180px,
+    /* the fold at the date: flap, then a crease that catches the light */
+    linear-gradient(90deg,
+      rgba(255, 255, 255, 0.0) 0, rgba(255, 255, 255, 0.0) calc(var(--wk-tab) - 1px),
+      rgba(255, 255, 255, 0.55) calc(var(--wk-tab) - 1px), rgba(255, 255, 255, 0.55) var(--wk-tab),
+      rgba(70, 40, 18, 0.20) var(--wk-tab), rgba(70, 40, 18, 0.0) calc(var(--wk-tab) + 7px))
+      0 0 / 100% calc(100% - var(--rb-drop)) no-repeat,
+    /* bowed toward the room light; the bottom rolls away into the edge */
+    linear-gradient(180deg,
+      rgba(255, 255, 255, 0.34) 0, rgba(255, 255, 255, 0.10) 1.5px, rgba(255, 255, 255, 0.10) 18%,
+      rgba(255, 255, 255, 0) 48%, rgba(80, 48, 20, 0.05) 76%,
+      rgba(80, 48, 20, 0.10) calc(100% - var(--rb-edge) - 1px),
+      rgba(60, 36, 14, 0.30) calc(100% - var(--rb-edge)), rgba(60, 36, 14, 0.36) 100%)
+      0 0 / 100% calc(100% - var(--rb-drop)) no-repeat,
+    linear-gradient(90deg, var(--rb-flap) 0, var(--rb-flap) var(--wk-tab), var(--rb-face) var(--wk-tab))
+      0 0 / 100% calc(100% - var(--rb-drop)) no-repeat,
+    /* the small shadow the card throws on whatever is under it */
+    linear-gradient(180deg, rgba(24, 14, 6, 0.36), rgba(24, 14, 6, 0)) 0 100% / 100% var(--rb-drop) no-repeat;
+  box-shadow: none;
+  opacity: 1;
+}
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar { color: var(--rb-ink); }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-face { bottom: var(--rb-drop); }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-tab { padding-left: 24px; gap: 11px; }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-tab::after { display: none; }
+
+/* Dates set in a stationer's serif, a little heavy, like a printed label. */
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-num {
+  font-family: "Ribbon Serif", "Jarvis Week", serif;
+  font-variation-settings: "opsz" 72;
+  font-weight: 580;
+  font-size: 42px;
+  letter-spacing: -0.03em;
+  min-width: 54px;
+}
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-wd { font-size: 17px; font-weight: 700; }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-sub { color: var(--rb-ink-2); font-size: 12.5px; font-weight: 700; letter-spacing: 0.01em; }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-sat .wk-num,
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-sat .wk-wd { color: #2c548a; }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-sun .wk-num,
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-sun .wk-wd,
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-holiday .wk-num,
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-holiday .wk-wd,
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-holiday .wk-sub { color: #a8302b; }
+
+/* Today: the folded flap is vermilion card. */
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-tabfill {
+  bottom: var(--rb-drop);
+  border-radius: 0;
+  clip-path: polygon(6px 0, 100% 0, 100% 100%, 0 100%);
+  background:
+    var(--rb-tooth) 0 0 / 180px 180px,
+    linear-gradient(180deg, rgba(255, 255, 255, 0.26) 0, rgba(255, 255, 255, 0.06) 20%, rgba(255, 255, 255, 0) 48%,
+      rgba(70, 18, 8, 0.10) calc(100% - var(--rb-edge) - 1px), rgba(70, 18, 8, 0.38) calc(100% - var(--rb-edge)), rgba(70, 18, 8, 0.44) 100%),
+    var(--rb-red);
+}
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-today .wk-num,
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-today .wk-wd,
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-today .wk-sub { color: var(--rb-red-ink); }
+
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-past .wk-fill { filter: saturate(0.62) brightness(1.05); }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-past .wk-face { opacity: 0.56; }
+
+/* Keep the print clear of the swallowtail. */
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-lane { padding-right: calc(var(--rb-notch) + 16px); }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-ev-title { font-size: 19.5px; font-weight: 700; letter-spacing: -0.02em; }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-ev-when { color: var(--rb-ink-2); font-size: 13px; font-weight: 700; letter-spacing: 0.01em; }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-ev-who,
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-ev-flag { color: var(--rb-ink-3); }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-ev-mark { width: 8px; height: 8px; border-radius: 50%; background: var(--rb-ink); box-sizing: border-box; }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-ev[data-who="sam"] .wk-ev-mark { background: transparent; border: 2px solid var(--rb-ink); }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-ev[data-who="birthdays"] .wk-ev-mark { border-radius: 1px; transform: rotate(45deg); }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-empty { color: rgba(42, 37, 32, 0.5); font-weight: 700; }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-empty.is-error { color: var(--rb-ink); }
+/* "+N" is a small punched label on the ribbon. */
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-more {
+  color: var(--rb-ink); background: rgba(255, 252, 244, 0.55); border: 0; border-radius: 2px;
+  box-shadow: 0 1px 0 rgba(60, 36, 14, 0.22);
+  padding: 6px 11px 5px; margin-left: 14px;
+  font-family: "Ribbon Serif", "Jarvis Week", serif; font-weight: 580; font-size: 19px;
+}
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-ribbon { background: transparent; height: 2px; left: 24px; right: calc(var(--rb-notch) + 16px); bottom: 7px; }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-ribbon i { background: var(--rb-ink) !important; opacity: 0.26; border-radius: 2px; }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-ribbon b { background: var(--rb-red); width: 3px; height: 9px; top: -3.5px; }
+
+/* Selection: the ribbon turns over to its ink-blue back. */
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-selected { --rb-face: var(--rb-back); --rb-flap: #262f45; color: var(--rb-back-ink); }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-selected .wk-fill { filter: none; }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-selected .wk-num,
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-selected .wk-wd { color: var(--day); }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-selected .wk-ev-when,
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-selected .wk-sub { color: rgba(244, 234, 214, 0.74); }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-selected .wk-ev-who,
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-selected .wk-ev-flag,
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-selected .wk-empty { color: rgba(244, 234, 214, 0.54); }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-selected.is-today .wk-num,
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-selected.is-today .wk-wd,
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-selected.is-today .wk-sub { color: var(--rb-red-ink); }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-selected.is-past .wk-face { opacity: 0.84; }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-selected .wk-ev-mark { background: var(--rb-back-ink); }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-selected .wk-ev[data-who="sam"] .wk-ev-mark { background: transparent; border-color: var(--rb-back-ink); }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-selected .wk-more { color: var(--rb-back); background: var(--day); box-shadow: none; }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-selected .wk-ribbon i { background: var(--rb-back-ink) !important; opacity: 0.4; }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-ev { border-radius: 2px; }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-ev.is-focused { background: var(--rb-back); color: var(--rb-back-ink); }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-ev.is-focused .wk-ev-when { color: rgba(244, 234, 214, 0.74); }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-ev.is-focused .wk-ev-who,
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-ev.is-focused .wk-ev-flag { color: rgba(244, 234, 214, 0.54); }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-ev.is-focused .wk-ev-mark { background: var(--rb-back-ink); }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-selected .wk-ev.is-focused { background: var(--day); color: var(--rb-ink); }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-selected .wk-ev.is-focused .wk-ev-when { color: var(--rb-ink-2); }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-selected .wk-ev.is-focused .wk-ev-who,
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-selected .wk-ev.is-focused .wk-ev-flag { color: var(--rb-ink-3); }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-selected .wk-ev.is-focused .wk-ev-mark { background: var(--rb-ink); }
+
+/* ---- questions, progress, spotlight, notes ---- */
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-ask { padding-right: calc(var(--rb-notch) + 12px); bottom: var(--rb-drop); }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-ask,
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-selected[data-ask] .wk-ask { color: var(--rb-back-ink); }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-ask-kicker { color: var(--day); letter-spacing: 0.04em; }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-ask-arrow { color: var(--day); }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-ask-actions { gap: 96px; }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-btn { border-radius: 2px; }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-btn[data-choice="confirm"],
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar:not(.is-selected) .wk-btn[data-choice="confirm"] {
+  background: var(--day); color: var(--rb-ink); box-shadow: 0 2px 0 rgba(0, 0, 0, 0.28);
+}
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar[data-ask="delete"] .wk-btn[data-choice="confirm"] { background: #d4593f; color: #fff4ea; }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar[data-ask-result="failed"] .wk-ask-status { color: #f6a58f; }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-progress { left: var(--wk-tab); right: calc(var(--rb-notch) + 10px); bottom: calc(var(--rb-drop) + 4px); }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-progress i { background: var(--day); }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-ev.is-ghost { outline: 2px dashed var(--rb-ink); outline-offset: -2px; }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-ev.is-ghost .wk-ev-when { color: var(--rb-ink); }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-selected .wk-ev.is-ghost { outline-color: var(--day); }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-selected .wk-ev.is-ghost .wk-ev-when { color: var(--day); }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-bar.is-focus .wk-fill { box-shadow: inset 0 0 0 3px var(--rb-red); }
+#week-calendar .wk-skin[data-skin="ribbon"] .wk-ev.is-focus .wk-ev-title { text-decoration-color: var(--rb-red); text-decoration-thickness: 3px; }
+#week-calendar[data-skin="ribbon"] .wk-note {
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0) 50%), #2e3850;
+  color: #f4ead6; border-radius: 2px; padding: 11px 22px;
+  box-shadow: 0 3px 0 #1d2436, 0 6px 14px -6px rgba(0, 0, 0, 0.5);
+}
+#week-calendar[data-skin="ribbon"] .wk-fly .wk-ev { background: #2e3850; color: #f4ead6; border-radius: 2px; box-shadow: 0 2px 0 #1d2436; }
+#week-calendar[data-skin="ribbon"] .wk-fly .wk-ev .wk-ev-when { color: rgba(244, 234, 214, 0.74); }

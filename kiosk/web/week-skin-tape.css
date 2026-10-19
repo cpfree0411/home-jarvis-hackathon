@@ -1,0 +1,210 @@
+@font-face { font-family: "Tape Hand"; src: url("fonts/skins/Gaegu-Tape-Bold.woff2") format("woff2"); font-weight: 700; font-display: block; }
+
+
+/* D — MASKING TAPE. Seven strips of washi tape pressed across the picture,
+   one soft colour each, torn by hand at both ends and never quite the same
+   length. Long paper fibres run along each strip and its edges sit a hair
+   darker where the tape lies down. Dates are written on the tape in marker;
+   the schedule itself stays in clean print. Today gets a second, vermilion
+   strip laid over its date; the day you touch turns to black washi. */
+
+#week-calendar[data-skin="tape"],
+#week-calendar .wk-skin[data-skin="tape"] {
+  --wk-margin: 14px;
+  --wk-gap: 8px;
+  --wk-radius: 0px;
+  --wk-tab: 146px;
+  --tp-ink: #2b2a33;
+  --tp-black: #34333b;
+  --tp-red: #d4573d;
+  --tp-red-ink: #fff6e8;
+  --wk-who-alex: #2b2a33;
+  --wk-who-sam: #2b2a33;
+  --wk-who-birthdays: #2b2a33;
+  --wk-who-other: #2b2a33;
+  /* Long fibres along the strip (dark and light), and a little tooth. */
+  --tp-fibre: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='120'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.012 0.75' numOctaves='3' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.32 0 0 0 0 0.26 0 0 0 0 0.16 0 0 0 0.9 -0.47'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+  --tp-sheen: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='90'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.008 0.3' numOctaves='2' seed='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.55 -0.34'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+  --tp-glint: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='260' height='90'%3E%3Cfilter id='f'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.008 0.3' numOctaves='2' seed='5' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.32 -0.2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23f)'/%3E%3C/svg%3E");
+  color: var(--tp-ink);
+}
+#week-calendar[data-skin="tape"] .wk-tone { background: rgba(250, 244, 230, 0.10); }
+
+/* Washi pastels: lighter and airier than Riso's flat print. */
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar:nth-child(1) { --day: #f0c4b2; --tear: var(--tp-tear-a); --tl: 0px;  --tr: 7px; --tt: 2px; --tb: 1px; }
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar:nth-child(2) { --day: #f1dc9f; --tear: var(--tp-tear-b); --tl: 5px;  --tr: 0px; --tt: 0px; --tb: 3px; }
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar:nth-child(3) { --day: #c3dbb8; --tear: var(--tp-tear-c); --tl: 1px;  --tr: 11px; --tt: 3px; --tb: 0px; }
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar:nth-child(4) { --day: #b4cfe6; --tear: var(--tp-tear-b); --tl: 7px;  --tr: 3px; --tt: 1px; --tb: 2px; }
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar:nth-child(5) { --day: #d3c5e6; --tear: var(--tp-tear-a); --tl: 2px;  --tr: 8px; --tt: 0px; --tb: 1px; }
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar:nth-child(6) { --day: #a9d8cf; --tear: var(--tp-tear-c); --tl: 6px;  --tr: 1px; --tt: 2px; --tb: 2px; }
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar:nth-child(7) { --day: #efb9c6; --tear: var(--tp-tear-b); --tl: 0px;  --tr: 5px; --tt: 1px; --tb: 0px; }
+
+/* Torn ends: small, uneven teeth, three different tears down the week. */
+#week-calendar .wk-skin[data-skin="tape"] {
+  --tp-tear-a: polygon(3px 0, calc(100% - 2px) 0, 100% 9%, calc(100% - 3px) 21%, calc(100% - 1px) 33%, calc(100% - 4px) 47%,
+    calc(100% - 1px) 60%, calc(100% - 3px) 73%, 100% 86%, calc(100% - 2px) 100%, 2px 100%, 0 88%, 3px 75%, 1px 62%,
+    4px 49%, 0 36%, 2px 23%, 0 11%);
+  --tp-tear-b: polygon(1px 0, calc(100% - 4px) 0, calc(100% - 1px) 13%, calc(100% - 3px) 27%, 100% 41%, calc(100% - 2px) 55%,
+    calc(100% - 4px) 68%, calc(100% - 1px) 82%, calc(100% - 3px) 100%, 4px 100%, 1px 84%, 3px 70%, 0 57%, 2px 44%,
+    0 30%, 3px 16%);
+  --tp-tear-c: polygon(2px 0, calc(100% - 1px) 0, calc(100% - 4px) 12%, calc(100% - 2px) 25%, calc(100% - 4px) 39%, 100% 52%,
+    calc(100% - 3px) 65%, calc(100% - 1px) 79%, calc(100% - 4px) 92%, calc(100% - 2px) 100%, 0 100%, 3px 90%, 1px 78%,
+    4px 64%, 1px 50%, 3px 37%, 0 24%, 2px 12%);
+  --wk-sweep: slide;
+}
+
+#week-calendar .wk-skin[data-skin="tape"] .wk-fill {
+  top: var(--tt, 0px);
+  bottom: var(--tb, 0px);
+  left: var(--tl, 0px);
+  right: var(--tr, 0px);
+  border-radius: 0;
+  clip-path: var(--tear, none);
+  background:
+    var(--tp-fibre),
+    var(--tp-sheen),
+    /* the long edges lie down a hair darker */
+    linear-gradient(180deg, rgba(90, 70, 40, 0.16), rgba(90, 70, 40, 0) 2.5px,
+      rgba(90, 70, 40, 0) calc(100% - 2.5px), rgba(90, 70, 40, 0.18)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.20), rgba(255, 255, 255, 0) 55%),
+    var(--day);
+  background-size: 220px 120px, 260px 90px, auto, auto, auto;
+  /* tape, not paint: a little of whatever it is stuck on comes through */
+  opacity: 0.93;
+  box-shadow: none;
+}
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar { color: var(--tp-ink); }
+#week-calendar .wk-skin[data-skin="tape"] .wk-tab { padding-left: 24px; gap: 10px; }
+#week-calendar .wk-skin[data-skin="tape"] .wk-tab::after { display: none; }
+
+/* Dates in marker. */
+#week-calendar .wk-skin[data-skin="tape"] .wk-num {
+  font-family: "Tape Hand", "Jarvis Week", sans-serif;
+  font-weight: 700;
+  font-size: 46px;
+  letter-spacing: -0.03em;
+  line-height: 0.86;
+  min-width: 52px;
+  font-variant-numeric: normal;
+}
+#week-calendar .wk-skin[data-skin="tape"] .wk-wd { font-family: "Tape Hand", "Jarvis Week", sans-serif; font-size: 23px; font-weight: 700; line-height: 0.9; }
+#week-calendar .wk-skin[data-skin="tape"] .wk-sub { font-family: "Tape Hand", "Jarvis Week", sans-serif; font-size: 16px; font-weight: 700; color: rgba(43, 42, 51, 0.7); letter-spacing: 0; line-height: 0.9; max-width: 70px; }
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-sat .wk-num,
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-sat .wk-wd { color: #2e5a94; }
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-sun .wk-num,
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-sun .wk-wd,
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-holiday .wk-num,
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-holiday .wk-wd,
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-holiday .wk-sub { color: #b0322e; }
+
+/* Today: a short vermilion strip laid over the date, slightly askew. */
+#week-calendar .wk-skin[data-skin="tape"] .wk-tabfill {
+  inset: 9px 14px 10px 9px;
+  border-radius: 0;
+  rotate: -1.4deg;
+  background:
+    var(--tp-fibre),
+    linear-gradient(180deg, rgba(80, 20, 10, 0.18), rgba(80, 20, 10, 0) 2px,
+      rgba(80, 20, 10, 0) calc(100% - 2px), rgba(80, 20, 10, 0.2)),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0) 60%),
+    var(--tp-red);
+  background-size: 220px 120px, auto, auto, auto;
+  opacity: 0.95;
+  clip-path: polygon(2px 0, calc(100% - 3px) 0, 100% 18%, calc(100% - 2px) 38%, 100% 57%, calc(100% - 3px) 78%,
+    calc(100% - 1px) 100%, 3px 100%, 0 80%, 2px 61%, 0 41%, 3px 21%);
+}
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-today .wk-num,
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-today .wk-wd,
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-today .wk-sub { color: var(--tp-red-ink); }
+
+/* The past: tape that has been up a while — paler, a little sun-faded. */
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-past .wk-fill { filter: saturate(0.6) brightness(1.06); }
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-past .wk-face { opacity: 0.56; }
+
+#week-calendar .wk-skin[data-skin="tape"] .wk-lane { padding-right: 22px; }
+#week-calendar .wk-skin[data-skin="tape"] .wk-ev-title { font-size: 19.5px; font-weight: 700; letter-spacing: -0.02em; }
+#week-calendar .wk-skin[data-skin="tape"] .wk-ev-when { color: rgba(43, 42, 51, 0.74); font-size: 13px; font-weight: 700; letter-spacing: 0.01em; }
+#week-calendar .wk-skin[data-skin="tape"] .wk-ev-who,
+#week-calendar .wk-skin[data-skin="tape"] .wk-ev-flag { color: rgba(43, 42, 51, 0.55); }
+/* Owners by shape, not colour: the strip already has one. */
+#week-calendar .wk-skin[data-skin="tape"] .wk-ev-mark { width: 8px; height: 8px; border-radius: 50%; background: var(--tp-ink); box-sizing: border-box; }
+#week-calendar .wk-skin[data-skin="tape"] .wk-ev[data-who="sam"] .wk-ev-mark { background: transparent; border: 2px solid var(--tp-ink); }
+#week-calendar .wk-skin[data-skin="tape"] .wk-ev[data-who="birthdays"] .wk-ev-mark { border-radius: 1px; transform: rotate(45deg); }
+#week-calendar .wk-skin[data-skin="tape"] .wk-empty { color: rgba(43, 42, 51, 0.5); font-family: "Tape Hand", "Jarvis Week", sans-serif; font-weight: 700; font-size: 18px; letter-spacing: 0; }
+#week-calendar .wk-skin[data-skin="tape"] .wk-empty.is-error { color: var(--tp-ink); }
+#week-calendar .wk-skin[data-skin="tape"] .wk-more {
+  color: var(--tp-ink); border-left: 0; margin-left: 14px; padding: 6px 4px 6px 12px;
+  font-family: "Tape Hand", "Jarvis Week", sans-serif; font-weight: 700; font-size: 25px;
+}
+/* The day's line, drawn in pencil along the strip. */
+#week-calendar .wk-skin[data-skin="tape"] .wk-ribbon { background: transparent; height: 2px; left: 24px; right: 22px; bottom: 8px; }
+#week-calendar .wk-skin[data-skin="tape"] .wk-ribbon i { background: var(--tp-ink) !important; opacity: 0.24; border-radius: 2px; }
+#week-calendar .wk-skin[data-skin="tape"] .wk-ribbon b { background: var(--tp-red); width: 3px; height: 9px; top: -3.5px; }
+
+/* Selection: the strip turns to black washi and keeps its colour as ink. */
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-selected { color: var(--day); }
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-selected .wk-fill {
+  background:
+    var(--tp-glint),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0) 55%),
+    linear-gradient(180deg, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0) 2.5px, rgba(0, 0, 0, 0) calc(100% - 2.5px), rgba(0, 0, 0, 0.3)),
+    var(--tp-black);
+  background-size: 260px 90px, auto, auto, auto;
+  opacity: 0.97;
+  filter: none;
+}
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-selected .wk-num,
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-selected .wk-wd { color: var(--day); }
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-selected .wk-ev-when,
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-selected .wk-sub,
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-selected .wk-ev-who,
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-selected .wk-ev-flag,
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-selected .wk-empty,
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-selected .wk-more { color: var(--day); opacity: 0.8; }
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-selected.is-today .wk-num,
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-selected.is-today .wk-wd,
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-selected.is-today .wk-sub { color: var(--tp-red-ink); opacity: 1; }
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-selected.is-past .wk-face { opacity: 0.82; }
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-selected .wk-ev-mark { background: var(--day); }
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-selected .wk-ev[data-who="sam"] .wk-ev-mark { background: transparent; border-color: var(--day); }
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-selected .wk-ribbon i { background: var(--day) !important; opacity: 0.4; }
+#week-calendar .wk-skin[data-skin="tape"] .wk-ev { border-radius: 2px; }
+#week-calendar .wk-skin[data-skin="tape"] .wk-ev.is-focused { background: var(--tp-black); color: var(--day); }
+#week-calendar .wk-skin[data-skin="tape"] .wk-ev.is-focused .wk-ev-when,
+#week-calendar .wk-skin[data-skin="tape"] .wk-ev.is-focused .wk-ev-who,
+#week-calendar .wk-skin[data-skin="tape"] .wk-ev.is-focused .wk-ev-flag { color: var(--day); opacity: 0.8; }
+#week-calendar .wk-skin[data-skin="tape"] .wk-ev.is-focused .wk-ev-mark { background: var(--day); }
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-selected .wk-ev.is-focused { background: var(--day); color: var(--tp-ink); }
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-selected .wk-ev.is-focused .wk-ev-when,
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-selected .wk-ev.is-focused .wk-ev-who,
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-selected .wk-ev.is-focused .wk-ev-flag { color: var(--tp-ink); opacity: 0.72; }
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-selected .wk-ev.is-focused .wk-ev-mark { background: var(--tp-ink); }
+
+/* ---- questions, progress, spotlight, notes ---- */
+#week-calendar .wk-skin[data-skin="tape"] .wk-ask,
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-selected[data-ask] .wk-ask { color: var(--day); }
+#week-calendar .wk-skin[data-skin="tape"] .wk-ask-kicker { color: var(--day); opacity: 0.85; font-family: "Tape Hand", "Jarvis Week", sans-serif; font-size: 17px; letter-spacing: 0.02em; }
+#week-calendar .wk-skin[data-skin="tape"] .wk-ask-arrow { color: var(--day); }
+#week-calendar .wk-skin[data-skin="tape"] .wk-btn { border-radius: 0; }
+#week-calendar .wk-skin[data-skin="tape"] .wk-btn[data-choice="confirm"],
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar:not(.is-selected) .wk-btn[data-choice="confirm"] {
+  background: var(--day); color: var(--tp-ink);
+  clip-path: polygon(2px 0, calc(100% - 3px) 0, 100% 25%, calc(100% - 2px) 52%, 100% 78%, calc(100% - 2px) 100%, 3px 100%, 0 74%, 2px 49%, 0 23%);
+}
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar[data-ask="delete"] .wk-btn[data-choice="confirm"] { background: #e2664c; color: #fff6ee; }
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar[data-ask-result="failed"] .wk-ask-status { color: #ff9e88; }
+#week-calendar .wk-skin[data-skin="tape"] .wk-progress { left: var(--wk-tab); right: 22px; bottom: 4px; }
+#week-calendar .wk-skin[data-skin="tape"] .wk-progress i { background: var(--day); }
+#week-calendar .wk-skin[data-skin="tape"] .wk-ev.is-ghost { outline: 2px dashed var(--tp-ink); outline-offset: -2px; }
+#week-calendar .wk-skin[data-skin="tape"] .wk-ev.is-ghost .wk-ev-when { color: var(--tp-ink); }
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-selected .wk-ev.is-ghost { outline-color: var(--day); }
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-selected .wk-ev.is-ghost .wk-ev-when { color: var(--day); }
+#week-calendar .wk-skin[data-skin="tape"] .wk-bar.is-focus .wk-fill { box-shadow: inset 0 0 0 3px var(--tp-ink); }
+#week-calendar .wk-skin[data-skin="tape"] .wk-ev.is-focus .wk-ev-title { text-decoration-color: var(--tp-red); text-decoration-thickness: 3px; }
+#week-calendar[data-skin="tape"] .wk-note {
+  background: var(--tp-fibre), #f1dc9f; background-size: 220px 120px, auto;
+  color: #2b2a33; border-radius: 0; padding: 11px 24px; rotate: -0.8deg;
+  clip-path: polygon(3px 0, calc(100% - 2px) 0, 100% 24%, calc(100% - 3px) 50%, 100% 76%, calc(100% - 2px) 100%, 2px 100%, 0 72%, 3px 47%, 0 22%);
+}
+#week-calendar[data-skin="tape"] .wk-fly .wk-ev { background: #34333b; color: #f1dc9f; border-radius: 0; }
+#week-calendar[data-skin="tape"] .wk-fly .wk-ev .wk-ev-when { color: rgba(241, 220, 159, 0.78); }

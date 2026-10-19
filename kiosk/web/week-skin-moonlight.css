@@ -1,0 +1,132 @@
+@font-face { font-family: "Moonlight Serif"; src: url("fonts/skins/Cormorant-Moonlight.woff2") format("woff2"); font-weight: 300 500; font-style: normal; font-display: block; }
+@font-face { font-family: "Moonlight Serif"; src: url("fonts/skins/Cormorant-Moonlight-Italic.woff2") format("woff2"); font-weight: 300 500; font-style: italic; font-display: block; }
+
+
+/* C — MOONLIGHT. Dark, but light: a deep indigo night instead of black ink,
+   hairline-framed slats with more air between them, thin champagne serif
+   numerals and regular-weight type. Touching a day lights it like the moon. */
+
+#week-calendar[data-skin="moonlight"],
+#week-calendar .wk-skin[data-skin="moonlight"] {
+  --wk-margin: 16px;
+  --wk-gap: 9px;
+  --wk-radius: 14px;
+  --wk-tab: 150px;
+  --mn-night: #212741;
+  --mn-champagne: #ecd9b0;
+  --mn-text: #eef0f8;
+  --mn-text-2: rgba(214, 220, 240, 0.62);
+  --mn-text-3: rgba(214, 220, 240, 0.36);
+  --mn-moon: #f2e8d2;
+  --mn-moon-ink: #1c2136;
+  --wk-who-alex: #e8c98d;
+  --wk-who-sam: #eaa5b8;
+  --wk-who-birthdays: #a3d6bb;
+  --wk-who-other: #a9b6e0;
+  color: var(--mn-text);
+}
+#week-calendar[data-skin="moonlight"] .wk-tone { background: rgba(8, 10, 22, 0.22); }
+
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-fill {
+  background: var(--mn-night);
+  opacity: 0.93;
+  box-shadow: inset 0 0 0 1px rgba(236, 217, 176, 0.14);
+}
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar { color: var(--mn-text); }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-tab::after { background: rgba(236, 217, 176, 0.14); top: 20px; bottom: 20px; }
+
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-num {
+  font-family: "Moonlight Serif", serif;
+  font-weight: 300;
+  font-size: 54px;
+  letter-spacing: -0.01em;
+  line-height: 0.9;
+  font-variant-numeric: lining-nums tabular-nums;
+  color: var(--mn-champagne);
+  min-width: 56px;
+}
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-wd { font-weight: 400; font-size: 15px; letter-spacing: 0.12em; color: var(--mn-champagne); }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-sub { font-family: "Moonlight Serif", serif; font-style: italic; font-size: 14px; color: var(--mn-text-2); letter-spacing: 0.02em; }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-sat .wk-num,
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-sat .wk-wd { color: #a9c3f2; }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-sun .wk-num,
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-sun .wk-wd,
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-holiday .wk-num,
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-holiday .wk-wd,
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-holiday .wk-sub { color: #f0a7a0; }
+
+/* Today: the frame is drawn in champagne and the numeral is full strength. */
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-today .wk-tabfill { display: none; }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-today .wk-tab::after { display: block; }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-today .wk-fill { box-shadow: inset 0 0 0 1px rgba(236, 217, 176, 0.75); }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-today .wk-num { font-weight: 500; color: var(--mn-champagne); }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-today .wk-wd,
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-today .wk-sub { color: var(--mn-champagne); }
+
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-past .wk-face { opacity: 0.55; }
+
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-ev-title { font-weight: 400; font-size: 20px; letter-spacing: -0.005em; color: var(--mn-text); }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-ev-when { font-size: 12px; letter-spacing: 0.08em; color: var(--mn-text-2); }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-ev-who,
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-ev-flag { color: var(--mn-text-3); }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-ev-mark { width: 5px; height: 5px; border-radius: 50%; }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-empty { color: var(--mn-text-3); letter-spacing: 0.06em; font-size: 13px; }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-more { color: var(--mn-champagne); border-color: rgba(236, 217, 176, 0.18); font-family: "Moonlight Serif", serif; font-weight: 400; font-size: 24px; }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-ribbon { background: transparent; height: 2px; bottom: 10px; }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-ribbon i { opacity: 0.5; border-radius: 2px; }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-ribbon b { background: var(--mn-champagne); }
+
+/* Selection: the slat lights to moon cream, type goes to night. */
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-selected { color: var(--mn-moon-ink); }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-selected .wk-fill { background: var(--mn-moon); opacity: 1; box-shadow: none; }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-selected .wk-num,
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-selected .wk-wd,
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-selected .wk-sub { color: var(--mn-moon-ink); }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-selected.is-sun .wk-num,
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-selected.is-holiday .wk-num { color: #b04a3e; }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-selected.is-sat .wk-num { color: #3a5fa6; }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-selected .wk-ev-title { color: var(--mn-moon-ink); }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-selected .wk-ev-when,
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-selected .wk-more { color: rgba(28, 33, 54, 0.6); }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-selected .wk-ev-who,
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-selected .wk-ev-flag,
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-selected .wk-empty { color: rgba(28, 33, 54, 0.4); }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-selected .wk-tab::after { background: rgba(28, 33, 54, 0.14); }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-selected .wk-ribbon { background: transparent; }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-selected .wk-ribbon b { background: #b8863a; }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-selected .wk-ev-mark { filter: brightness(0.7) saturate(1.4); }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-ev { border-radius: 8px; }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-ev.is-focused { background: var(--mn-moon); color: var(--mn-moon-ink); }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-ev.is-focused .wk-ev-title { color: var(--mn-moon-ink); }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-selected .wk-ev.is-focused { background: var(--mn-night); }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-selected .wk-ev.is-focused .wk-ev-title { color: var(--mn-text); }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-selected .wk-ev.is-focused .wk-ev-when { color: var(--mn-text-2); }
+
+/* ---- production additions ---- */
+#week-calendar .wk-skin[data-skin="moonlight"] { --wk-sweep: slide; }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-ev-when { font-size: 13px; color: rgba(222, 228, 246, 0.72); }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-ev-who,
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-ev-flag { color: rgba(222, 228, 246, 0.5); }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-sub { color: rgba(222, 228, 246, 0.7); }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-empty { color: rgba(222, 228, 246, 0.46); }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-empty.is-error { color: var(--mn-champagne); }
+
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-ask,
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-selected[data-ask] .wk-ask { color: var(--mn-moon-ink); }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-ask-kicker { color: #9a6d2a; font-family: "Moonlight Serif", serif; font-style: italic; font-weight: 500; font-size: 15px; letter-spacing: 0.02em; }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-ask-title { font-weight: 400; }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-ask-arrow { color: #9a6d2a; }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-btn { border-radius: 10px; }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-btn[data-choice="confirm"],
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar:not(.is-selected) .wk-btn[data-choice="confirm"] { background: var(--mn-night); color: var(--mn-champagne); }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar[data-ask="delete"] .wk-btn[data-choice="confirm"] { background: #a8473c; color: #fbefe8; }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar[data-ask-result="failed"] .wk-ask-status { color: #a8473c; }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-progress { left: var(--wk-tab); right: 14px; bottom: 6px; }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-progress i { background: #b8863a; }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-ev.is-ghost { outline-color: var(--mn-champagne); }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-ev.is-ghost .wk-ev-when { color: var(--mn-champagne); }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-bar.is-focus .wk-fill { box-shadow: inset 0 0 0 1px rgba(236, 217, 176, 0.9); }
+#week-calendar .wk-skin[data-skin="moonlight"] .wk-ev.is-focus .wk-ev-title { text-decoration-color: var(--mn-champagne); text-decoration-thickness: 1px; }
+#week-calendar[data-skin="moonlight"] .wk-note { background: #f2e8d2; color: #1c2136; border-radius: 10px; font-weight: 400; }
+#week-calendar[data-skin="moonlight"] .wk-fly .wk-ev { background: #f2e8d2; color: #1c2136; border-radius: 8px; }
+#week-calendar[data-skin="moonlight"] .wk-fly .wk-ev .wk-ev-when { color: rgba(28, 33, 54, 0.6); }

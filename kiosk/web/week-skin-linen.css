@@ -1,0 +1,147 @@
+@font-face { font-family: "Linen Serif"; src: url("fonts/skins/Fraunces-Linen.woff2") format("woff2"); font-weight: 300 600; font-style: normal; font-display: block; }
+@font-face { font-family: "Linen Serif"; src: url("fonts/skins/Fraunces-Linen-Italic.woff2") format("woff2"); font-weight: 300 500; font-style: italic; font-display: block; }
+@font-face { font-family: "Linen Batang"; src: url("fonts/skins/GowunBatang-Linen-Regular.woff2") format("woff2"); font-weight: 400; font-display: block; }
+@font-face { font-family: "Linen Batang"; src: url("fonts/skins/GowunBatang-Linen-Bold.woff2") format("woff2"); font-weight: 700; font-display: block; }
+
+
+/* A — LINEN. Warm editorial: a stack of cream paper slips over the picture.
+   Serif numerals, Korean serif titles, ink-brown type, one terracotta note
+   for today, and a forest-green inversion for the day you touch. */
+
+#week-calendar[data-skin="linen"],
+#week-calendar .wk-skin[data-skin="linen"] {
+  --wk-margin: 16px;
+  --wk-gap: 8px;
+  --wk-radius: 3px;
+  --wk-tab: 150px;
+  --ln-paper: #f6f0e4;
+  --ln-today: #f8e2cc;
+  --ln-ink: #2c2620;
+  --ln-ink-2: rgba(44, 38, 32, 0.62);
+  --ln-ink-3: rgba(44, 38, 32, 0.38);
+  --ln-terra: #b9532f;
+  --ln-forest: #34453a;
+  --ln-forest-ink: #f3ecdd;
+  color: var(--ln-ink);
+}
+#week-calendar[data-skin="linen"] .wk-tone { background: rgba(38, 26, 14, 0.16); }
+
+#week-calendar .wk-skin[data-skin="linen"] .wk-fill {
+  background: var(--ln-paper);
+  opacity: 0.96;
+  box-shadow: 0 1px 0 rgba(60, 40, 20, 0.10), 0 10px 24px -14px rgba(30, 20, 10, 0.45);
+}
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar { color: var(--ln-ink); }
+#week-calendar .wk-skin[data-skin="linen"] .wk-tab::after { background: rgba(44, 38, 32, 0.12); top: 18px; bottom: 18px; }
+
+#week-calendar .wk-skin[data-skin="linen"] .wk-num {
+  font-family: "Linen Serif", serif;
+  font-variation-settings: "opsz" 144;
+  font-weight: 360;
+  font-size: 46px;
+  letter-spacing: -0.02em;
+  min-width: 58px;
+}
+#week-calendar .wk-skin[data-skin="linen"] .wk-wd {
+  font-family: "Linen Batang", "Jarvis Week", serif;
+  font-weight: 700;
+  font-size: 17px;
+}
+#week-calendar .wk-skin[data-skin="linen"] .wk-sub {
+  font-family: "Linen Serif", serif;
+  font-style: italic;
+  font-size: 13px;
+  letter-spacing: 0;
+  color: var(--ln-ink-2);
+}
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar.is-sat .wk-num,
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar.is-sat .wk-wd { color: #45698f; }
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar.is-sun .wk-num,
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar.is-sun .wk-wd,
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar.is-holiday .wk-num { color: var(--ln-terra); }
+
+/* Today: warmer paper and a terracotta numeral; no block of colour. */
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar.is-today .wk-fill { background: var(--ln-today); }
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar.is-today .wk-tabfill { display: none; }
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar.is-today .wk-tab::after { display: block; }
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar.is-today .wk-num,
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar.is-today .wk-wd,
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar.is-today .wk-sub { color: var(--ln-terra); }
+
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar.is-past .wk-face { opacity: 0.56; }
+
+#week-calendar .wk-skin[data-skin="linen"] .wk-ev-title {
+  font-family: "Linen Batang", "Jarvis Week", serif;
+  font-weight: 700;
+  font-size: 20px;
+  letter-spacing: -0.015em;
+}
+#week-calendar .wk-skin[data-skin="linen"] .wk-ev-when {
+  font-family: "Linen Serif", serif;
+  font-style: italic;
+  font-size: 14px;
+  letter-spacing: 0;
+  color: var(--ln-ink-2);
+}
+#week-calendar .wk-skin[data-skin="linen"] .wk-ev-who,
+#week-calendar .wk-skin[data-skin="linen"] .wk-ev-flag { color: var(--ln-ink-3); font-family: "Linen Batang", "Jarvis Week", serif; font-style: normal; font-size: 12px; }
+#week-calendar .wk-skin[data-skin="linen"] .wk-ev-mark { width: 6px; height: 6px; border-radius: 50%; }
+#week-calendar[data-skin="linen"],
+#week-calendar .wk-skin[data-skin="linen"] {
+  --wk-who-alex: #b8862f;
+  --wk-who-sam: #b9606a;
+  --wk-who-birthdays: #6e9467;
+  --wk-who-other: #7b8796;
+}
+#week-calendar .wk-skin[data-skin="linen"] .wk-empty { color: var(--ln-ink-3); font-family: "Linen Batang", "Jarvis Week", serif; }
+#week-calendar .wk-skin[data-skin="linen"] .wk-more { color: var(--ln-ink-2); border-color: rgba(44, 38, 32, 0.14); font-family: "Linen Serif", serif; font-weight: 400; font-size: 22px; }
+#week-calendar .wk-skin[data-skin="linen"] .wk-ribbon { background: transparent; height: 2px; bottom: 9px; }
+#week-calendar .wk-skin[data-skin="linen"] .wk-ribbon i { opacity: 0.42; border-radius: 2px; }
+#week-calendar .wk-skin[data-skin="linen"] .wk-ribbon b { background: var(--ln-terra); }
+
+/* Selection: the slip turns forest green, type turns linen. */
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar.is-selected { color: var(--ln-forest-ink); }
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar.is-selected .wk-fill { background: var(--ln-forest); opacity: 1; }
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar.is-selected .wk-num,
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar.is-selected .wk-wd { color: var(--ln-forest-ink); }
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar.is-selected.is-today .wk-num,
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar.is-selected.is-today .wk-wd,
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar.is-selected.is-today .wk-sub { color: #f2b08f; }
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar.is-selected .wk-ev-when,
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar.is-selected .wk-sub,
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar.is-selected .wk-more { color: rgba(243, 236, 221, 0.66); }
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar.is-selected .wk-ev-who,
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar.is-selected .wk-ev-flag,
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar.is-selected .wk-empty { color: rgba(243, 236, 221, 0.42); }
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar.is-selected .wk-tab::after { background: rgba(243, 236, 221, 0.16); }
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar.is-selected .wk-ribbon { background: transparent; }
+#week-calendar .wk-skin[data-skin="linen"] .wk-ev.is-focused { background: var(--ln-forest); color: var(--ln-forest-ink); }
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar.is-selected .wk-ev.is-focused { background: var(--ln-paper); color: var(--ln-ink); }
+
+/* ---- production additions: legibility, questions, spotlight, notes ---- */
+#week-calendar .wk-skin[data-skin="linen"] { --wk-sweep: scale; }
+#week-calendar .wk-skin[data-skin="linen"] .wk-ev-when { color: rgba(44, 38, 32, 0.72); font-size: 14.5px; }
+#week-calendar .wk-skin[data-skin="linen"] .wk-ev-who,
+#week-calendar .wk-skin[data-skin="linen"] .wk-ev-flag { color: rgba(44, 38, 32, 0.52); font-size: 12.5px; }
+#week-calendar .wk-skin[data-skin="linen"] .wk-sub { color: rgba(44, 38, 32, 0.7); }
+#week-calendar .wk-skin[data-skin="linen"] .wk-empty { color: rgba(44, 38, 32, 0.46); }
+#week-calendar .wk-skin[data-skin="linen"] .wk-empty.is-error { color: rgba(44, 38, 32, 0.72); }
+
+#week-calendar .wk-skin[data-skin="linen"] .wk-ask { color: var(--ln-forest-ink); }
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar.is-selected[data-ask] .wk-ask { color: var(--ln-forest-ink); }
+#week-calendar .wk-skin[data-skin="linen"] .wk-ask-kicker { color: #f2b08f; font-family: "Linen Serif", serif; font-style: italic; font-weight: 400; font-size: 14px; letter-spacing: 0; }
+#week-calendar .wk-skin[data-skin="linen"] .wk-ask-title { font-family: "Linen Batang", "Jarvis Week", serif; }
+#week-calendar .wk-skin[data-skin="linen"] .wk-ask-arrow { color: #f2b08f; }
+#week-calendar .wk-skin[data-skin="linen"] .wk-btn[data-choice="confirm"],
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar:not(.is-selected) .wk-btn[data-choice="confirm"] { background: var(--ln-paper); color: var(--ln-forest); }
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar[data-ask="delete"] .wk-btn[data-choice="confirm"] { background: #c4573a; color: #fff6ee; }
+#week-calendar .wk-skin[data-skin="linen"] .wk-btn { border-radius: 2px; }
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar[data-ask-result="failed"] .wk-ask-status { color: #f2b08f; }
+#week-calendar .wk-skin[data-skin="linen"] .wk-progress i { background: #f2b08f; }
+#week-calendar .wk-skin[data-skin="linen"] .wk-ev.is-ghost { outline-color: var(--ln-terra); }
+#week-calendar .wk-skin[data-skin="linen"] .wk-ev.is-ghost .wk-ev-when { color: var(--ln-terra); }
+#week-calendar .wk-skin[data-skin="linen"] .wk-bar.is-focus .wk-fill { box-shadow: inset 4px 0 0 0 var(--ln-terra), 0 10px 24px -14px rgba(30, 20, 10, 0.45); }
+#week-calendar .wk-skin[data-skin="linen"] .wk-ev.is-focus .wk-ev-title { text-decoration-color: var(--ln-terra); }
+#week-calendar[data-skin="linen"] .wk-note { background: #34453a; color: #f3ecdd; font-family: "Linen Batang", "Jarvis Week", serif; border-radius: 2px; }
+#week-calendar[data-skin="linen"] .wk-fly .wk-ev { background: #34453a; color: #f3ecdd; }
+#week-calendar[data-skin="linen"] .wk-fly .wk-ev .wk-ev-when { color: rgba(243, 236, 221, 0.66); }

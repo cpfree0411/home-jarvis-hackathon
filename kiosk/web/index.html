@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en" translate="no">
+<head>
+  <meta charset="UTF-8">
+  <meta name="google" content="notranslate">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Home Jarvis — Kiosk</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <!-- Public showcase build of the production kiosk page. The renderer,
+       week calendar, Ask overlay and OTAKU host scripts are the files that
+       run on the Raspberry Pi; profiles that depend on private household
+       data (family photos, news briefing, music, notes, weather) are left out. -->
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="week-calendar.css">
+  <link rel="stylesheet" href="week-skin-riso.css">
+  <link rel="stylesheet" href="week-skin-linen.css">
+  <link rel="stylesheet" href="week-skin-moonlight.css">
+  <link rel="stylesheet" href="week-skin-tape.css">
+  <link rel="stylesheet" href="week-skin-ribbon.css">
+  <link rel="stylesheet" href="ask-overlay.css">
+</head>
+<body data-state="idle" data-media="none" data-think="focus">
+  <!-- Rollback/debug SVG filter. Normal Live entry uses the raw WebGL
+       sine-ripple surface below; this definition is only activated by the
+       explicit ?wave=svg (or legacy ?wave=1) debug path. -->
+  <svg id="jarvis-wake-wave-defs" aria-hidden="true" focusable="false">
+    <defs>
+      <filter id="jarvis-wake-wave-filter" x="-8%" y="-8%" width="116%" height="116%"
+              color-interpolation-filters="sRGB">
+        <feTurbulence id="jarvis-wake-wave-noise" type="fractalNoise"
+                      baseFrequency="0.006 0.010" numOctaves="2" seed="37"
+                      stitchTiles="stitch" result="wake-wave-noise"></feTurbulence>
+        <feOffset id="jarvis-wake-wave-offset" in="wake-wave-noise"
+                  dx="0" dy="0" result="wake-wave-moved"></feOffset>
+        <feDisplacementMap id="jarvis-wake-wave-displacement"
+                           in="SourceGraphic" in2="wake-wave-moved"
+                           scale="0" xChannelSelector="R"
+                           yChannelSelector="G"></feDisplacementMap>
+      </filter>
+    </defs>
+  </svg>
+
+  <div id="jarvis-visual-root">
+  <!-- Layer 1: Media Surface. The photograph is the content; everything else
+       is a property applied to it. Two slots so gallery advance can cross-
+       dissolve without reallocating DOM. -->
+  <div id="media-surface">
+    <!-- The impulse wrapper exists only so the wake shock can be a one-shot
+         scale on its own element. Putting it on .media-stage would override
+         the depth transition that is running at exactly the same moment, and
+         Chromium does not hand a transition back the value a removed
+         animation was sitting at. -->
+    <div class="media-impulse">
+      <div class="media-stage">
+        <div class="media-slot" data-slot="a"></div>
+        <div class="media-slot" data-slot="b"></div>
+        <!-- Production and canary wake surface. It reuses the active gallery
+             image as one WebGL texture and stays inactive outside playback. -->
+        <canvas id="sine-wave-surface" aria-hidden="true"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Layer 1.4: Museum label. The artwork itself remains in the ordinary
+       media slots; this is only the quiet editorial field that uses the wide
+       screen space a portrait or square work leaves unused. -->
+  <div id="art-surface" aria-hidden="true" hidden>
+    <article class="art-copy" id="art-copy">
+      <div class="art-kicker" id="art-kicker">MUSEUM / OPEN ACCESS</div>
+      <h1 class="art-title" id="art-title"></h1>
+      <div class="art-creator" id="art-creator"></div>
+      <div class="art-meta" id="art-meta"></div>
+      <div class="art-rule"></div>
+      <p class="art-note" id="art-note"></p>
+      <div class="art-foot">
+        <span id="art-source"></span>
+        <span class="art-foot-sep">·</span>
+        <span id="art-license"></span>
+      </div>
+    </article>
+  </div>
+
+  <!-- Layer 1.5: Briefing Surface. Inert on every profile but BRIEFING.
+       The photograph is not here — it rides the media slots above, so the
+       cross-dissolve and session hold work on a briefing frame exactly as
+       they do on a family photograph. This layer only adds the grade, the
+       shadow the story is printed into, and the copy. -->
+  <div id="briefing-surface" aria-hidden="true" hidden>
+    <div class="briefing-tone">
+      <div class="tone-cool"></div>
+      <div class="tone-warm"></div>
+    </div>
+    <div class="briefing-well">
+      <i class="well-crown"></i>
+      <i class="well-side"></i>
+      <i class="well-base"></i>
+      <i class="well-lift"></i>
+    </div>
+    <div class="briefing-grain"></div>
+    <article class="briefing-copy" id="briefing-copy">
+      <div class="briefing-overline">
+        <span class="overline-category" id="briefing-category"></span>
+        <span class="overline-topic" id="briefing-topic"></span>
+        <span class="overline-time" id="briefing-time"></span>
+      </div>
+      <h1 class="briefing-headline" id="briefing-headline"></h1>
+      <div class="briefing-rule"></div>
+      <p class="briefing-deck" id="briefing-deck"></p>
+      <div class="briefing-foot">
+        <span class="foot-source" id="briefing-source"></span>
+        <span class="foot-relevance" id="briefing-relevance"></span>
+      </div>
+    </article>
+  </div>
+
+  <!-- Layer 2: Caption Surface. A shadow that appears in the photograph, -->
+  <!-- not a box placed on top of it. -->
+  <div id="caption-surface">
+    <div class="caption-scrim"></div>
+    <div class="caption-atmosphere"></div>
+    <div class="caption-text">
+      <span class="caption-line" lang="en" aria-live="polite" aria-atomic="true"></span>
+    </div>
+  </div>
+
+  <!-- Layer 3: compact semantic state pill. The adapter keeps this surface
+       above the wake wave and Visual Answer surface while leaving the gallery
+       and caption composition untouched. It is hidden for idle, wake, and
+       speaking; follow-up Listening may sit above a Visual Answer. -->
+  <div id="state-pill-host" aria-hidden="true"></div>
+
+  <!-- Layer 4: Visual Answer Surface. Production hosts weather, FX and
+       portfolio cards here; they read private Home Assistant data and are
+       not part of the public showcase. -->
+  <div id="visual-answer-surface" aria-hidden="true"></div>
+
+  <!-- Layer 5: Universal Overlay Host. -->
+  <div id="overlay-host">
+    <div id="ask-overlay" class="is-inert" data-state="closed" aria-hidden="true"><iframe id="ask-frame" title="Ask the Three" allow="microphone"></iframe></div>
+    <!-- Layer 5a': Weekly Calendar Visual Reaction. Seven opaque slats laid
+         over the gallery when someone asks about their week. Inert and empty
+         while closed; week-calendar.js builds the slats on open. -->
+    <div id="week-calendar" class="is-inert" data-state="closed" data-skin="riso" aria-hidden="true">
+      <div class="wk-tone" aria-hidden="true"></div>
+      <div class="wk-stack wk-skin" data-skin="riso"></div>
+      <div class="wk-fly" aria-hidden="true"></div>
+      <div class="wk-note" data-shown="no" role="status"></div>
+    </div>
+
+  </div>
+
+  </div>
+
+  <script src="vendor/thinking-orbs-engine.js"></script>
+  <script src="state-pill.js"></script>
+  <script src="caption-reveal.js"></script>
+  <script src="sine-wave-surface.js"></script>
+  <script src="wake-wave-surface.js"></script>
+  <script src="app.js"></script>
+  <script src="week-calendar.js"></script>
+  <script src="otaku-en-host.js"></script>
+  <script src="ask-overlay.js"></script>
+</body>
+</html>
