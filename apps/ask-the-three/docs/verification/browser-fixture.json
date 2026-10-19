@@ -1,0 +1,268 @@
+{
+ "summary": {
+  "mode": "fixture",
+  "screens": 27,
+  "hangul_total": 0,
+  "max_overflow_x": 0,
+  "small_targets": [],
+  "fonts_ok": true,
+  "embargo_dom_unchanged": [
+   true,
+   true
+  ],
+  "console_errors": []
+ },
+ "screens": [
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 425,
+   "screen": "01-home-demo"
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 215,
+   "screen": "02-setup"
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 1449,
+   "screen": "03-samples"
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 755,
+   "screen": "04-sample-read"
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 98,
+   "screen": "05-typing"
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 98,
+   "screen": "06-typing-filled"
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 168,
+   "screen": "07-error-no-key"
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 233,
+   "screen": "08-recording"
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 108,
+   "screen": "09-wrapping-up"
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 168,
+   "screen": "10-voice-error-no-key"
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 108,
+   "screen": "11-organizing"
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 912,
+   "screen": "12-review"
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 137,
+   "screen": "13-waiting-0of3"
+  },
+  {
+   "screen": "embargo-1of3",
+   "dom_unchanged": true
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 137,
+   "screen": "14-waiting-1of3"
+  },
+  {
+   "screen": "embargo-2of3",
+   "dom_unchanged": true
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 137,
+   "screen": "14-waiting-2of3"
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 362,
+   "screen": "15-reveal-peeling"
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 342,
+   "screen": "16-reveal-demo"
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 480,
+   "screen": "17-detail-nemotron-demo"
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 491,
+   "screen": "17-detail-gpt-demo"
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 497,
+   "screen": "17-detail-claude-demo"
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 745,
+   "screen": "18-original-words"
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 604,
+   "screen": "19-archive-demo"
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 351,
+   "screen": "20-reveal-one-failed"
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 173,
+   "screen": "21-detail-failed"
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 92,
+   "screen": "22-delete-confirm"
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 445,
+   "screen": "23-reveal-long-title"
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 349,
+   "screen": "24-reduced-motion-reveal"
+  }
+ ]
+}

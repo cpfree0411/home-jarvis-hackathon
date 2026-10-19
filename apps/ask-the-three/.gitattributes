@@ -1,0 +1,2 @@
+# Preserve the complete upstream OFL notices, including upstream line-end spaces.
+ask_three_en/web/fonts/OFL-*.txt -whitespace

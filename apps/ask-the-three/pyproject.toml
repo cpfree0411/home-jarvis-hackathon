@@ -1,0 +1,30 @@
+[project]
+name = "ask-three-en"
+version = "1.0.0"
+description = "Ask the Three (English edition): one everyday disagreement, three independent AI judges, revealed together. NVIDIA Nemotron via Nebius Token Factory."
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE", "NOTICE", "ask_three_en/web/fonts/OFL-*.txt"]
+requires-python = ">=3.11"
+dependencies = ["fastapi>=0.115,<1", "uvicorn[standard]>=0.30,<1", "websockets>=14,<17"]
+
+[project.optional-dependencies]
+dev = ["httpx>=0.27,<1", "pytest>=8,<10"]
+browser = ["playwright>=1.58,<2"]
+
+[project.scripts]
+ask-three-en = "ask_three_en.cli:main"
+
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["ask_three_en*"]
+
+[tool.setuptools.package-data]
+ask_three_en = ["web/*.html", "web/*.js", "web/*.css", "web/fonts/*"]
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]

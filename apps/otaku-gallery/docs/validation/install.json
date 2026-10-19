@@ -1,0 +1,49 @@
+{
+  "wheel": "otaku_gallery_en-1.0.0-py3-none-any.whl",
+  "checks": [
+    {
+      "name": "wheel contains eight original samples",
+      "pass": true
+    },
+    {
+      "name": "wheel includes public evidence fixture",
+      "pass": true
+    },
+    {
+      "name": "wheel includes licenses and notices",
+      "pass": true
+    },
+    {
+      "name": "wheel excludes private env, caches and local media",
+      "pass": true
+    },
+    {
+      "name": "installed command starts with isolated environment",
+      "pass": true
+    },
+    {
+      "name": "installed gallery loads without checkout or key",
+      "pass": true
+    },
+    {
+      "name": "installed index is English",
+      "pass": true
+    },
+    {
+      "name": "installed artwork files all served",
+      "pass": true
+    },
+    {
+      "name": "installed browser code all served",
+      "pass": true
+    },
+    {
+      "name": "installed no-key research uses source excerpts",
+      "pass": true
+    }
+  ],
+  "passed": 10,
+  "total": 10,
+  "environment": "fresh venv, unrelated working directory, empty inherited environment, explicit minimal PATH",
+  "paid_calls": 0
+}

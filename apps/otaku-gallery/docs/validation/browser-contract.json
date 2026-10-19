@@ -1,0 +1,167 @@
+{
+  "checks": [
+    {
+      "name": "all eight artworks browse and wrap",
+      "pass": true
+    },
+    {
+      "name": "artwork has accessible description",
+      "pass": true
+    },
+    {
+      "name": "embedding background option active",
+      "pass": true
+    },
+    {
+      "name": "space resumes slideshow",
+      "pass": true
+    },
+    {
+      "name": "space pauses slideshow",
+      "pass": true
+    },
+    {
+      "name": "favorite survives reload",
+      "pass": true
+    },
+    {
+      "name": "favorite filter narrows gallery",
+      "pass": true
+    },
+    {
+      "name": "empty favorites message is English",
+      "pass": true
+    },
+    {
+      "name": "all filter restores gallery",
+      "pass": true
+    },
+    {
+      "name": "research search receives focus",
+      "pass": true
+    },
+    {
+      "name": "modal keeps keyboard focus inside",
+      "pass": true
+    },
+    {
+      "name": "typed query renders source-backed result",
+      "pass": true
+    },
+    {
+      "name": "kiosk source link shows address",
+      "pass": true
+    },
+    {
+      "name": "closing research restores opener focus",
+      "pass": true
+    },
+    {
+      "name": "unsafe has useful English state",
+      "pass": true
+    },
+    {
+      "name": "not-found has useful English state",
+      "pass": true
+    },
+    {
+      "name": "rate-limit has useful English state",
+      "pass": true
+    },
+    {
+      "name": "ambiguous has useful English state",
+      "pass": true
+    },
+    {
+      "name": "HTTP errors offer an English retry",
+      "pass": true
+    },
+    {
+      "name": "network failure is understandable",
+      "pass": true
+    },
+    {
+      "name": "research controls fit 390x844",
+      "pass": true
+    },
+    {
+      "name": "research controls fit 1024x600",
+      "pass": true
+    },
+    {
+      "name": "research controls fit 1920x1080",
+      "pass": true
+    },
+    {
+      "name": "no browser exceptions",
+      "pass": true
+    },
+    {
+      "name": "touch keyboard stays hidden until the field is touched",
+      "pass": true
+    },
+    {
+      "name": "touching the search field shows the keyboard",
+      "pass": true
+    },
+    {
+      "name": "shift and space type English",
+      "pass": true
+    },
+    {
+      "name": "backspace edits typed text",
+      "pass": true
+    },
+    {
+      "name": "keyboard leaves search field and buttons uncovered",
+      "pass": true
+    },
+    {
+      "name": "keyboard fits 1024x600 without overflow",
+      "pass": true
+    },
+    {
+      "name": "touch keys are at least 44px",
+      "pass": true
+    },
+    {
+      "name": "hide closes the keyboard",
+      "pass": true
+    },
+    {
+      "name": "touching the field reopens the keyboard",
+      "pass": true
+    },
+    {
+      "name": "hardware typing still writes the field",
+      "pass": true
+    },
+    {
+      "name": "keyboard search runs research and hides keyboard",
+      "pass": true
+    },
+    {
+      "name": "result shows sources",
+      "pass": true
+    },
+    {
+      "name": "first key replaces the finished query",
+      "pass": true
+    },
+    {
+      "name": "closing research hides keyboard and returns to gallery",
+      "pass": true
+    },
+    {
+      "name": "touch keyboard has no console errors",
+      "pass": true
+    },
+    {
+      "name": "desktop mouse keeps the system keyboard path",
+      "pass": true
+    }
+  ],
+  "passed": 40,
+  "total": 40,
+  "paid_calls": 0
+}

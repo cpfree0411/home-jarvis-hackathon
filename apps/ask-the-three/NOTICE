@@ -1,0 +1,36 @@
+Ask the Three — English edition
+
+Application code, original CSS paper textures, fictional sample stories, and
+synthetic UI screenshots: Copyright (c) 2026 Ask the Three contributors.
+Distributed under the MIT license in LICENSE. This English edition continues
+the authors' Ask the Three application; it does not depend on another checkout.
+
+Bundled font software is NOT MIT licensed:
+
+Gaegu-Bold-latin.woff2
+  Copyright 2018 The Gaegu Project Authors
+  Designer: JIKJI SOFT
+  Source: https://github.com/google/fonts/tree/main/ofl/gaegu
+  Modified: Latin subset of Gaegu Bold, converted to WOFF2 with fontTools.
+  License: SIL Open Font License 1.1, in
+    ask_three_en/web/fonts/OFL-Gaegu.txt
+
+Nunito-latin-var.woff2
+  Copyright 2014 The Nunito Project Authors
+  Designers: Vernon Adams, Cyreal, Jacques Le Bailly
+  Source: https://github.com/google/fonts/tree/main/ofl/nunito
+  Upstream: https://github.com/googlefonts/nunito
+  Modified: Latin subset of Nunito variable weight font, converted to WOFF2
+    with fontTools. Weight range 200–1000, source version 3.602.
+  License: SIL Open Font License 1.1, in
+    ask_three_en/web/fonts/OFL-Nunito.txt
+
+Both complete OFL notices accompany the fonts in source and built wheels.
+The supplied copyright statements declare no Reserved Font Names.
+Font software remains under OFL 1.1. The CSS aliases Ask Hand and Ask Text are
+application aliases, not claims of authorship of the underlying font software.
+
+Python dependencies are installed separately; their upstream licenses remain
+applicable. See docs/LICENSE_AUDIT.md. No provider SDK, model weights, logos,
+recorded human voice, or external photo assets are bundled. Provider names
+identify configurable integrations and imply no endorsement.

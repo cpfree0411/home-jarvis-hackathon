@@ -1,0 +1,9 @@
+{
+  "public_audit": "PASS",
+  "candidate_files": 57,
+  "font_sha256": {
+    "ask_three_en/web/fonts/Gaegu-Bold-latin.woff2": "d606bb3a33fd3f95898bc4a459966ba7fee55e04f2d2cc58deec96ec12395c31",
+    "ask_three_en/web/fonts/Nunito-latin-var.woff2": "7532bb3d32ded78bc36c30014e530bdb5b802e316ab8fa860c36bf87d6745be9"
+  },
+  "errors": []
+}

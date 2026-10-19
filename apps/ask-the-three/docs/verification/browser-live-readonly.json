@@ -1,0 +1,68 @@
+{
+ "summary": {
+  "mode": "live",
+  "screens": 6,
+  "hangul_total": 0,
+  "max_overflow_x": 0,
+  "small_targets": [],
+  "fonts_ok": true,
+  "embargo_dom_unchanged": [],
+  "console_errors": []
+ },
+ "screens": [
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 309,
+   "screen": "L01-home-live"
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 330,
+   "screen": "L02-archive-live"
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 310,
+   "screen": "L07-reveal-live"
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 531,
+   "screen": "L08-detail-nemotron-live"
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 564,
+   "screen": "L08-detail-gpt-live"
+  },
+  {
+   "hangul": 0,
+   "overflow_x": 0,
+   "small_targets": [],
+   "hand_font": true,
+   "text_font": true,
+   "chars": 819,
+   "screen": "L08-detail-claude-live"
+  }
+ ]
+}

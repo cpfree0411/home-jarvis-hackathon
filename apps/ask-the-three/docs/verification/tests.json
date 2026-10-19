@@ -1,0 +1,13 @@
+{
+  "result": "PASS",
+  "command": "./scripts/test.sh",
+  "python_tests_passed": 31,
+  "python_compileall": "PASS",
+  "javascript_node_check": "PASS",
+  "full_real_process_cli_e2e": "PASS",
+  "public_material_tests": "PASS",
+  "warnings": [
+    "Upstream Starlette httpx TestClient deprecation (one warning)."
+  ],
+  "paid_calls": 0
+}

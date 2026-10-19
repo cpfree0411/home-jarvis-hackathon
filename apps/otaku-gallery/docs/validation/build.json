@@ -1,0 +1,16 @@
+{
+  "command": "python -m build",
+  "passed": true,
+  "outputs": [
+    {
+      "file": "dist/otaku_gallery_en-1.0.0-py3-none-any.whl",
+      "sha256": "dd4cc4d1d30badfc4d2c5c8818df76f0d4507823654d62c47fdac8420735aed4",
+      "bytes": 143192
+    },
+    {
+      "file": "dist/otaku_gallery_en-1.0.0.tar.gz",
+      "sha256": "87f6ec7a889ffe169c5f9a356e13bc613d32e99efd3c240f640fa967559a02ec",
+      "bytes": 134671
+    }
+  ]
+}

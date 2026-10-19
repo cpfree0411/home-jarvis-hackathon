@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="dark">
+  <title>OTAKU Gallery · Research Guide with NVIDIA Nemotron</title>
+  <meta name="description" content="An ambient anime-style art gallery with an AI Research Guide written by NVIDIA Nemotron 3 Ultra through Nebius Token Factory.">
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="app.css">
+  <link rel="stylesheet" href="research.css">
+</head>
+<body>
+  <main id="app" data-state="loading">
+    <div id="stage" role="img" aria-label="Gallery artwork">
+      <img class="layer" id="layer-a" alt="" decoding="async">
+      <img class="layer" id="layer-b" alt="" decoding="async">
+      <div class="vignette"></div>
+    </div>
+
+    <header id="topbar">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">&#10022;</span><b>OTAKU</b><span>Gallery</span></div>
+      <div class="counter" id="counter" aria-live="polite"></div>
+      <div class="tools">
+        <button type="button" id="fav" aria-pressed="false" data-tip="Favorite"><span aria-hidden="true">&#9825;</span><i class="sr">Favorite</i></button>
+        <button type="button" id="play" aria-pressed="false" data-tip="Pause slideshow"><span aria-hidden="true">&#10074;&#10074;</span><i class="sr">Pause slideshow</i></button>
+        <button type="button" id="info-open" aria-expanded="false" aria-controls="info" data-tip="Artwork details"><span aria-hidden="true">i</span><i class="sr">Artwork details</i></button>
+      </div>
+    </header>
+
+    <button type="button" class="nav" id="prev" aria-label="Previous artwork"><span aria-hidden="true">&#8249;</span></button>
+    <button type="button" class="nav" id="next" aria-label="Next artwork"><span aria-hidden="true">&#8250;</span></button>
+
+    <section id="caption" aria-live="polite">
+      <p class="kicker" id="cap-source"></p>
+      <h1 id="cap-title"></h1>
+      <p class="cap-desc" id="cap-desc"></p>
+      <ul class="tags" id="cap-tags"></ul>
+      <div class="cap-actions">
+        <button type="button" id="research-open" class="nv-btn">
+          <span class="nv-eye" aria-hidden="true"></span>
+          <span class="nv-label">Research Guide</span>
+          <small>NVIDIA Nemotron 3 Ultra</small>
+        </button>
+      </div>
+    </section>
+    <div id="progress" aria-hidden="true"><i></i></div>
+
+    <aside id="info" role="dialog" aria-labelledby="info-title" aria-modal="false" hidden>
+      <div class="info-head">
+        <h2 id="info-title">Artwork details</h2>
+        <button type="button" id="info-close" class="x" aria-label="Close details">&times;</button>
+      </div>
+      <div class="info-body">
+        <p id="info-desc" class="info-desc"></p>
+        <dl class="meta">
+          <div><dt>Creator</dt><dd id="info-creator"></dd></div>
+          <div><dt>License</dt><dd id="info-license"></dd></div>
+          <div><dt>Source</dt><dd id="info-source"></dd></div>
+        </dl>
+        <h3>Browse by tag</h3>
+        <ul class="tags filter" id="filter-tags"></ul>
+        <p class="fine" id="filter-note"></p>
+        <h3>Explore with the Research Guide</h3>
+        <ul class="topics" id="info-topics"></ul>
+        <p class="fine">These are reading suggestions related to the picture's theme. They do not identify anything in the artwork.</p>
+        <p class="fine" id="privacy-note">Favorites are kept only in this browser (localStorage). Research queries are sent to the server and public reference sites; with AI enabled, the query and source excerpts also go to Nebius.</p>
+      </div>
+    </aside>
+
+    <section id="research" role="dialog" aria-modal="true" aria-labelledby="rs-title" hidden>
+      <div class="rs-bar">
+        <div class="rs-kicker"><b id="rs-title">Research Guide</b><i>Powered by NVIDIA Nemotron 3 Ultra</i></div>
+        <form class="rs-search" autocomplete="off">
+          <input class="rs-input" type="text" maxlength="80" spellcheck="false" enterkeyhint="search"
+                 placeholder="Search an anime, manga, game, artist, character, or genre" aria-label="Research topic">
+          <button type="submit" class="rs-go nv-btn"><span class="nv-eye" aria-hidden="true"></span>Research</button>
+        </form>
+        <button type="button" class="rs-close" aria-label="Close Research Guide">Close &times;</button>
+      </div>
+      <div class="rs-topics" hidden></div>
+      <div class="rs-body" tabindex="0">
+        <div class="rs-progress" hidden role="status">
+          <div class="rs-orbit" aria-hidden="true"><span></span><span></span><span></span></div>
+          <p class="rs-progress-text"></p>
+          <ol class="rs-steps"><li class="rs-step" data-stage="searching">Reading sources</li><li class="rs-step" data-stage="writing">Writing with Nemotron</li><li class="rs-step" data-stage="done">Checking citations</li></ol>
+          <p class="rs-progress-sub"></p>
+          <button type="button" class="rs-cancel">Cancel</button>
+        </div>
+        <article class="rs-article" aria-live="polite"></article>
+      </div>
+      <div class="rs-keyboard" hidden aria-label="On-screen keyboard"></div>
+      <p class="rs-toast" role="status" hidden></p>
+    </section>
+
+    <div id="toast" role="status" hidden></div>
+    <noscript><p class="noscript">This gallery needs JavaScript. All artwork is bundled with the app and nothing is loaded from third-party sites.</p></noscript>
+  </main>
+  <script src="strings.js"></script>
+  <script src="app.js"></script>
+  <script src="research.js"></script>
+</body>
+</html>

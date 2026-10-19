@@ -1,0 +1,41 @@
+# Python / tooling
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+.pytest_cache/
+
+# Credentials and local configuration: never commit
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+credentials*.json
+auth.json
+.credentials.json
+
+# Runtime state, databases, logs, recordings
+runtime/
+state/
+*.sqlite
+*.sqlite3
+*.sqlite3-*
+*.db
+*.log
+*.wav
+*.flac
+*.mp3
+*.ogg
+*.webm
+*.m4a
+
+# Private images: only curated synthetic screenshots under docs/screenshots/ are published
+*.png
+*.jpg
+*.jpeg
+!docs/screenshots/*.png

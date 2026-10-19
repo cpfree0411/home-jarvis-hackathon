@@ -1,0 +1,31 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "otaku-gallery-en"
+version = "1.0.0"
+description = "An ambient English art gallery with a source-grounded Nebius Nemotron research guide"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT AND CC-BY-SA-4.0 AND CC0-1.0"
+license-files = ["LICENSE", "NOTICE", "LICENSES/*.txt"]
+authors = [{name = "OTAKU Gallery contributors"}]
+dependencies = []
+
+[project.optional-dependencies]
+test = ["playwright>=1.58,<2"]
+
+[project.scripts]
+otaku-gallery = "otaku_gallery.app:main"
+
+[tool.setuptools]
+packages = ["otaku_gallery"]
+
+[tool.setuptools.data-files]
+"share/otaku-gallery-en/web" = ["web/*.html", "web/*.css", "web/*.js", "web/favicon.svg"]
+"share/otaku-gallery-en/web/art" = ["web/art/*.svg"]
+"share/otaku-gallery-en/data" = ["data/gallery.json"]
+"share/otaku-gallery-en/data/fixtures" = ["data/fixtures/*.json"]
+"share/otaku-gallery-en" = ["LICENSE", "NOTICE"]
+"share/otaku-gallery-en/LICENSES" = ["LICENSES/*.txt"]

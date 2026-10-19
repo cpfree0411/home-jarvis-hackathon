@@ -1,0 +1,47 @@
+[
+  {
+    "query": "Hayao Miyazaki",
+    "provider": "wiki_search",
+    "records": 4,
+    "filtered": 0,
+    "kinds": [
+      "encyclopedia",
+      "encyclopedia",
+      "encyclopedia",
+      "encyclopedia"
+    ],
+    "passed": true,
+    "urls": [
+      "https://en.wikipedia.org/wiki/Hayao_Miyazaki",
+      "https://en.wikipedia.org/wiki/Hayao_Miyazaki_bibliography",
+      "https://en.wikipedia.org/wiki/List_of_works_by_Hayao_Miyazaki",
+      "https://en.wikipedia.org/wiki/Goro_Miyazaki"
+    ]
+  },
+  {
+    "query": "Motoko Kusanagi",
+    "provider": "anilist_search",
+    "records": 1,
+    "filtered": 0,
+    "kinds": [
+      "character"
+    ],
+    "passed": true,
+    "urls": [
+      "https://anilist.co/character/1795"
+    ]
+  },
+  {
+    "query": "Ghost in the Shell",
+    "provider": "anilist_search",
+    "records": 1,
+    "filtered": 2,
+    "kinds": [
+      "anime"
+    ],
+    "passed": true,
+    "urls": [
+      "https://anilist.co/anime/43"
+    ]
+  }
+]

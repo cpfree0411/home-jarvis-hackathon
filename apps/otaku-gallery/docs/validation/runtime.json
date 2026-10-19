@@ -1,0 +1,71 @@
+{
+  "checks": [
+    {
+      "name": "runtime health and eight artworks",
+      "pass": true
+    },
+    {
+      "name": "runtime credential loaded without interactive shell",
+      "pass": true
+    },
+    {
+      "name": "runtime real provider model configured",
+      "pass": true
+    },
+    {
+      "name": "installed code matches audited source",
+      "pass": true
+    },
+    {
+      "name": "installed UI data and art match source",
+      "pass": true
+    },
+    {
+      "name": "runtime research reaches terminal answered page",
+      "pass": true
+    },
+    {
+      "name": "runtime response model is exact Ultra",
+      "pass": true
+    },
+    {
+      "name": "runtime citations point to fetched public records",
+      "pass": true
+    },
+    {
+      "name": "runtime provider returned usage",
+      "pass": true
+    },
+    {
+      "name": "runtime fresh model call completed",
+      "pass": true
+    },
+    {
+      "name": "demo service remains active after smoke",
+      "pass": true
+    }
+  ],
+  "passed": 11,
+  "total": 11,
+  "bind": "127.0.0.1",
+  "demo_port": 8805,
+  "unit": "otaku-gallery-en-demo.service",
+  "provider": "Nebius Token Factory",
+  "model": "nvidia/Nemotron-3-Ultra-550b-a55b",
+  "status": "answered",
+  "usage": {
+    "prompt_tokens": 2314,
+    "completion_tokens": 1199,
+    "total_tokens": 3513
+  },
+  "timings": {
+    "evidence_ms": 974,
+    "model_ms": 3754,
+    "total_ms": 4756
+  },
+  "unverified_count": 1,
+  "source_count": 6,
+  "evidence_used": "live",
+  "estimated_cost_usd": 0.005911,
+  "paid_calls": 1
+}

@@ -1,0 +1,16 @@
+{
+  "limit_usd": 0.25,
+  "reservations": [
+    {
+      "at": "2026-10-19T05:16:58.981736+00:00",
+      "reserved_usd": 0.019445,
+      "model": "nvidia/Nemotron-3-Ultra-550b-a55b"
+    },
+    {
+      "at": "2026-10-19T05:20:51.585402+00:00",
+      "reserved_usd": 0.113024,
+      "model": "nvidia/Nemotron-3-Ultra-550b-a55b",
+      "purpose": "service-context capability smoke"
+    }
+  ]
+}

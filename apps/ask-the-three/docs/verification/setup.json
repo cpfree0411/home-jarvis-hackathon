@@ -1,0 +1,23 @@
+{
+  "result": "PASS",
+  "platform": "Linux x86_64",
+  "python": "3.12",
+  "source_copy": "Git candidate files copied without venv, database, credentials or temp files; installed from that clean copy",
+  "install_command": "./scripts/install.sh",
+  "test_command": "./scripts/test.sh",
+  "clean_copy_tests_passed": 31,
+  "wheel_loaded_outside_source": true,
+  "installed_runtime_matches_authored_sources": true,
+  "wheel_contents_verified": [
+    "index.html",
+    "app.js",
+    "style.css",
+    "Gaegu-Bold-latin.woff2",
+    "Nunito-latin-var.woff2",
+    "OFL-Gaegu.txt",
+    "OFL-Nunito.txt",
+    "LICENSE",
+    "NOTICE"
+  ],
+  "constraints_sha256": "780505e9ed9a4807f0132a4cc7b664faf8cb95ae54668f42880362c8838cb8f4"
+}

@@ -1,0 +1,41 @@
+{
+  "result": "PASS",
+  "context": "Temporary systemd user service, clean installed wheel, empty environment except PATH, isolated state and port. No login-shell environment or credentials.",
+  "health": {
+    "ok": true,
+    "version": "1.0.0",
+    "edition": "en",
+    "organizer": {
+      "provider": "fixture",
+      "model": "prepared-sample",
+      "endpoint": null
+    },
+    "panel": [
+      {
+        "seat": "nemotron",
+        "provider": "fixture",
+        "model": "demo-fixture",
+        "live": false
+      },
+      {
+        "seat": "gpt",
+        "provider": "fixture",
+        "model": "demo-fixture",
+        "live": false
+      },
+      {
+        "seat": "claude",
+        "provider": "fixture",
+        "model": "demo-fixture",
+        "live": false
+      }
+    ],
+    "stt": {
+      "provider": "off",
+      "language": "en-US"
+    }
+  },
+  "index_english": true,
+  "synthetic_e2e": "PASS",
+  "paid_calls": 0
+}

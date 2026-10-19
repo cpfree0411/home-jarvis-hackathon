@@ -1,0 +1,69 @@
+{
+  "date": "2026-10-19",
+  "environment": "Real 1024x600 kiosk touchscreen (Chromium, ?kiosk=1); taps dispatched as touch events through DevTools, not a physical finger",
+  "queries": [
+    "Cyberpunk (live result: ambiguous with cited sections)",
+    "Hayao Miyazaki (answered by nvidia/Nemotron-3-Ultra-550b-a55b, 4 cited sources)"
+  ],
+  "checks": [
+    {
+      "name": "research guide opens",
+      "pass": true
+    },
+    {
+      "name": "keyboard hidden before touch",
+      "pass": true
+    },
+    {
+      "name": "touching field shows keyboard",
+      "pass": true
+    },
+    {
+      "name": "shift+letters+space",
+      "pass": true
+    },
+    {
+      "name": "backspace then letters",
+      "pass": true
+    },
+    {
+      "name": "layout on Pi",
+      "pass": true
+    },
+    {
+      "name": "hide closes keyboard",
+      "pass": true
+    },
+    {
+      "name": "reopen keyboard",
+      "pass": true
+    },
+    {
+      "name": "enter starts search, keyboard hides",
+      "pass": true
+    },
+    {
+      "name": "Nemotron result with sources",
+      "pass": false
+    },
+    {
+      "name": "close returns to gallery, lease released",
+      "pass": true
+    },
+    {
+      "name": "touch-typed query",
+      "pass": true
+    },
+    {
+      "name": "answered Nemotron page with sources",
+      "pass": true
+    },
+    {
+      "name": "close returns to gallery",
+      "pass": true
+    }
+  ],
+  "passed": 13,
+  "total": 14,
+  "note": "The first query intentionally counted as FAIL in the probe because it expected an answered page; the server correctly returned an ambiguity page with cited sources. The second, unambiguous query passed."
+}

@@ -1,0 +1,76 @@
+{
+ "live": false,
+ "base": "loopback ephemeral port",
+ "ui_wall_s": 0.78,
+ "external_requests": [],
+ "checks": [
+  {
+   "name": "gallery shows first artwork title",
+   "pass": true
+  },
+  {
+   "name": "no horizontal overflow at 1024x600",
+   "pass": true
+  },
+  {
+   "name": "next artwork via keyboard",
+   "pass": true
+  },
+  {
+   "name": "favorite persists in localStorage",
+   "pass": true
+  },
+  {
+   "name": "tag filter narrows the view",
+   "pass": true
+  },
+  {
+   "name": "research page rendered",
+   "pass": true
+  },
+  {
+   "name": "English UI has no Hangul text",
+   "pass": true
+  },
+  {
+   "name": "source links come from allowlisted hosts",
+   "pass": true
+  },
+  {
+   "name": "honest missing-key fallback",
+   "pass": true
+  },
+  {
+   "name": "sources are present",
+   "pass": true
+  },
+  {
+   "name": "citation marker visible",
+   "pass": true
+  },
+  {
+   "name": "no horizontal overflow in research view",
+   "pass": true
+  },
+  {
+   "name": "closing the panel hides it",
+   "pass": true
+  },
+  {
+   "name": "no horizontal overflow at 1920x1080",
+   "pass": true
+  },
+  {
+   "name": "no horizontal overflow at 390x844",
+   "pass": true
+  },
+  {
+   "name": "no third-party network requests",
+   "pass": true
+  },
+  {
+   "name": "no page errors",
+   "pass": true
+  }
+ ]
+}

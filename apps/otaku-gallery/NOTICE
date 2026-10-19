@@ -1,0 +1,86 @@
+OTAKU Gallery — attribution and sample provenance
+
+Code and documentation: MIT, copyright 2026 OTAKU Gallery contributors.
+Original sample art: CC0 1.0 Universal (see LICENSE and LICENSES/CC0-1.0.txt).
+The sample SVGs were authored procedurally with Claude (Anthropic) assistance
+in scripts/generate_art.py for this project. They are original demo scenes,
+not scans, downloads, tracings, or depictions of licensed franchise characters.
+AI assistance is disclosed; no exclusive copyright in AI output is asserted.
+Any rights held by the contributors in these samples are dedicated under CC0.
+All eight samples share that provenance and dedication:
+
+  Rain Over Neon Row — web/art/neon-rooftop-rain.svg
+  Petals at the Last Platform — web/art/sakura-station.svg
+  Lantern Steps — web/art/moonlit-shrine.svg
+  Starlight Circle — web/art/starlight-circle.svg
+  Dawn Guardian — web/art/steel-guardian-dawn.svg
+  Long Summer Afternoon — web/art/lighthouse-summer.svg
+  Skybound Crossing — web/art/floating-isles.svg
+  After the Last Bell — web/art/classroom-sunset.svg
+
+Artwork topics are reading suggestions, not identities or creator attributions.
+Third-party titles, artist names and trademarks are used for reference only.
+NVIDIA, Nebius, Anthropic, Wikipedia and AniList do not sponsor this project.
+
+Bundled reference text: Wikipedia contributors, CC BY-SA 4.0.
+https://creativecommons.org/licenses/by-sa/4.0/
+Full terms: LICENSES/CC-BY-SA-4.0.txt. Lead excerpts were shortened and may
+end mid-sentence; the bundled snapshot is not an independently verified article.
+Article revision URLs and author-history URLs follow. Retrieval dates and
+revision IDs are also recorded in data/fixtures/wikipedia-snapshots.json.
+
+Cyberpunk (retrieved 2026-10-19)
+  https://en.wikipedia.org/w/index.php?oldid=1379366659
+  https://en.wikipedia.org/w/index.php?title=Cyberpunk&action=history
+Ghost in the Shell (retrieved 2026-10-19)
+  https://en.wikipedia.org/w/index.php?oldid=1374023154
+  https://en.wikipedia.org/w/index.php?title=Ghost_in_the_Shell&action=history
+Slice of life (retrieved 2026-10-19)
+  https://en.wikipedia.org/w/index.php?oldid=1373668036
+  https://en.wikipedia.org/w/index.php?title=Slice_of_life&action=history
+Hanami (retrieved 2026-10-19)
+  https://en.wikipedia.org/w/index.php?oldid=1378645711
+  https://en.wikipedia.org/w/index.php?title=Hanami&action=history
+Yōkai (retrieved 2026-10-19)
+  https://en.wikipedia.org/w/index.php?oldid=1376880723
+  https://en.wikipedia.org/w/index.php?title=Y%C5%8Dkai&action=history
+Kitsune (retrieved 2026-10-19)
+  https://en.wikipedia.org/w/index.php?oldid=1379657300
+  https://en.wikipedia.org/w/index.php?title=Kitsune&action=history
+Magical girl (retrieved 2026-10-19)
+  https://en.wikipedia.org/w/index.php?oldid=1380009506
+  https://en.wikipedia.org/w/index.php?title=Magical_girl&action=history
+Cardcaptor Sakura (retrieved 2026-10-19)
+  https://en.wikipedia.org/w/index.php?oldid=1380956838
+  https://en.wikipedia.org/w/index.php?title=Cardcaptor_Sakura&action=history
+Mecha anime and manga (retrieved 2026-10-19)
+  https://en.wikipedia.org/w/index.php?oldid=1373651155
+  https://en.wikipedia.org/w/index.php?title=Mecha_anime_and_manga&action=history
+Mobile Suit Gundam (retrieved 2026-10-19)
+  https://en.wikipedia.org/w/index.php?oldid=1380433195
+  https://en.wikipedia.org/w/index.php?title=Mobile_Suit_Gundam&action=history
+Iyashikei (retrieved 2026-10-19)
+  https://en.wikipedia.org/w/index.php?oldid=1370395973
+  https://en.wikipedia.org/w/index.php?title=Iyashikei&action=history
+Yotsuba&! (retrieved 2026-10-19)
+  https://en.wikipedia.org/w/index.php?oldid=1379278881
+  https://en.wikipedia.org/w/index.php?title=Yotsuba%26%21&action=history
+Isekai (retrieved 2026-10-19)
+  https://en.wikipedia.org/w/index.php?oldid=1379710558
+  https://en.wikipedia.org/w/index.php?title=Isekai&action=history
+Castle in the Sky (retrieved 2026-10-19)
+  https://en.wikipedia.org/w/index.php?oldid=1373654084
+  https://en.wikipedia.org/w/index.php?title=Castle_in_the_Sky&action=history
+Visual novel (retrieved 2026-10-19)
+  https://en.wikipedia.org/w/index.php?oldid=1379056796
+  https://en.wikipedia.org/w/index.php?title=Visual_novel&action=history
+Steins;Gate (retrieved 2026-10-19)
+  https://en.wikipedia.org/w/index.php?oldid=1380920189
+  https://en.wikipedia.org/w/index.php?title=Steins%3BGate&action=history
+
+Live AniList data is fetched on request from https://graphql.anilist.co.
+No AniList content is bundled. Only short attributed excerpts are displayed;
+the source links lead to the corresponding AniList work or character page.
+AniList terms: https://anilist.co/terms ; API terms: https://docs.anilist.co/guide/terms
+Research text may paraphrase CC BY-SA source material. Preserve its source
+attribution and applicable share-alike terms when redistributing such text.

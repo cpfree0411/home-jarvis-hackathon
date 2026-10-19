@@ -1,0 +1,86 @@
+{
+  "provenance": "Predecessor execution on 2026-10-19; recovered from transcript, read-only synthetic SQLite rows and service journal. Not a fresh live run by the finishing worker.",
+  "predecessor_status": "BLOCKED by session limit; this finishing execution is an independent continuation.",
+  "nemotron_smoke": {
+    "NEMOTRON_SMOKE": "PASS",
+    "served_model": "nvidia/Nemotron-3-Ultra-550b-a55b",
+    "choice": "B",
+    "strength": "LEAN",
+    "usage": {
+      "prompt_tokens": 362,
+      "completion_tokens": 113,
+      "total_tokens": 475,
+      "provider": "nebius",
+      "model": "nvidia/Nemotron-3-Ultra-550b-a55b",
+      "finish_reason": "stop",
+      "latency_s": 1.686
+    },
+    "estimated_cost_usd": 0.000701,
+    "ascii_share": 1.0,
+    "reasoning_chars": 144
+  },
+  "haircut_panel": {
+    "sample_id": "haircut",
+    "status": "REVEALED",
+    "organizer": "nvidia/Nemotron-3-Ultra-550b-a55b",
+    "created_at": "2026-10-19T05:07:25.845236+00:00",
+    "seats": [
+      {
+        "member": "claude",
+        "status": "COMPLETED",
+        "provider": "claude-cli",
+        "model": "claude-sonnet-5-5",
+        "live": true,
+        "choice": "B",
+        "strength": "LEAN",
+        "error": null
+      },
+      {
+        "member": "gpt",
+        "status": "COMPLETED",
+        "provider": "codex-cli",
+        "model": "gpt-6.1-sol",
+        "live": true,
+        "choice": "A",
+        "strength": "CLOSE",
+        "error": null
+      },
+      {
+        "member": "nemotron",
+        "status": "COMPLETED",
+        "provider": "nebius",
+        "model": "nvidia/Nemotron-3-Ultra-550b-a55b",
+        "live": true,
+        "choice": "B",
+        "strength": "LEAN",
+        "error": null
+      }
+    ]
+  },
+  "english_audio": {
+    "synthetic_duration_seconds": 7.54,
+    "results": [
+      {
+        "STT_SMOKE": "PASS",
+        "model": "gemini-3.5-transcribe-live",
+        "language": "en-US",
+        "interim_events": 15,
+        "final_chars": 142
+      },
+      {
+        "STT_SMOKE": "PASS",
+        "model": "gemini-3.5-transcribe-live",
+        "language": "auto",
+        "interim_events": 14,
+        "final_chars": 142
+      }
+    ],
+    "scope": "Live server-side transcription of ffmpeg-generated synthetic speech; not a physical microphone or Pi acceptance test."
+  },
+  "journal_nebius": {
+    "calls": 6,
+    "prompt_tokens": 2543,
+    "completion_tokens": 1205
+  },
+  "finishing_worker_additional_paid_calls": 0
+}

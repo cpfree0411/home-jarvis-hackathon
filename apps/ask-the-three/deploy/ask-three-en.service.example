@@ -1,0 +1,24 @@
+# Copy to a user service directory only after replacing the example paths.
+# Requires an installed venv and operator-owned 0600 env file; never commit it.
+[Unit]
+Description=Ask the Three English demo
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/apps/ask-three-en
+Environment=PATH=/usr/local/bin:/usr/bin:/bin
+Environment=ASK_THREE_HOST=127.0.0.1
+Environment=ASK_THREE_PORT=8794
+Environment=ASK_THREE_STATE=%h/.local/state/ask-three-en
+ExecStart=%h/apps/ask-three-en/.venv/bin/ask-three-en serve --env-file %h/.config/ask-three-en/env
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=15
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+
+[Install]
+WantedBy=default.target

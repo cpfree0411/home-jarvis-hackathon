@@ -1,0 +1,119 @@
+{
+ "live": true,
+ "base": "loopback ephemeral port",
+ "ui_wall_s": 3.3,
+ "external_requests": [],
+ "provider": "Nebius Token Factory",
+ "endpoint_host": "api.tokenfactory.us-central1.nebius.com",
+ "model": "nvidia/Nemotron-3-Ultra-550b-a55b",
+ "usage": {
+  "prompt_tokens": 939,
+  "completion_tokens": 934,
+  "total_tokens": 1873
+ },
+ "metrics": {
+  "http_status": 200,
+  "latency_ms": 2737,
+  "request_bytes": 6421
+ },
+ "paid_calls": 1,
+ "estimated_cost_usd": 0.003741,
+ "price_source": "https://github.com/nebius/token-factory-cookbook/blob/main/models/nemotron/nemotron3-ultra-550b-a55b.md",
+ "price_usd_per_million": {
+  "input": 1.0,
+  "output": 3.0
+ },
+ "response_model_validated": true,
+ "strict_schema_validated": true,
+ "status": "answered",
+ "timings": {
+  "evidence_ms": 0,
+  "model_ms": 2737,
+  "total_ms": 2768
+ },
+ "cached": false,
+ "unverified": 0,
+ "sources": [
+  {
+   "id": "S1",
+   "provider": "Wikipedia (English) · bundled snapshot",
+   "title": "Cyberpunk",
+   "url": "https://en.wikipedia.org/wiki/Cyberpunk",
+   "cited": true
+  }
+ ],
+ "checks": [
+  {
+   "name": "gallery shows first artwork title",
+   "pass": true
+  },
+  {
+   "name": "no horizontal overflow at 1024x600",
+   "pass": true
+  },
+  {
+   "name": "next artwork via keyboard",
+   "pass": true
+  },
+  {
+   "name": "favorite persists in localStorage",
+   "pass": true
+  },
+  {
+   "name": "tag filter narrows the view",
+   "pass": true
+  },
+  {
+   "name": "research page rendered",
+   "pass": true
+  },
+  {
+   "name": "English UI has no Hangul text",
+   "pass": true
+  },
+  {
+   "name": "source links come from allowlisted hosts",
+   "pass": true
+  },
+  {
+   "name": "model chip visible",
+   "pass": true
+  },
+  {
+   "name": "sources are present",
+   "pass": true
+  },
+  {
+   "name": "citation marker visible",
+   "pass": true
+  },
+  {
+   "name": "no horizontal overflow in research view",
+   "pass": true
+  },
+  {
+   "name": "closing the panel hides it",
+   "pass": true
+  },
+  {
+   "name": "no horizontal overflow at 1920x1080",
+   "pass": true
+  },
+  {
+   "name": "no horizontal overflow at 390x844",
+   "pass": true
+  },
+  {
+   "name": "no third-party network requests",
+   "pass": true
+  },
+  {
+   "name": "no page errors",
+   "pass": true
+  },
+  {
+   "name": "real model answered from cited evidence",
+   "pass": true
+  }
+ ]
+}
