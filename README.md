@@ -53,7 +53,7 @@ More: [the judge's stage page](assets/screenshots/stage-desktop.png) · [real Pi
 Requirements: **Python 3.11+** (tested 3.12.3 on Linux), network access to PyPI. Optional: Node.js (JavaScript tests), Playwright (browser checks).
 
 ```sh
-git clone <this repository> home-jarvis-hackathon && cd home-jarvis-hackathon
+git clone https://github.com/cpfree0411/home-jarvis-hackathon.git && cd home-jarvis-hackathon
 ./scripts/install.sh          # one .venv with both apps (editable) + test tools
 ./scripts/run.sh --demo       # no keys needed; nothing is sent to any AI provider
 ```
