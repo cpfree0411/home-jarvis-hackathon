@@ -9,15 +9,22 @@ import json
 import re
 import sys
 import time
+import urllib.parse
 import urllib.request
 
 HANGUL = re.compile("[%s-%s]" % (chr(0xAC00), chr(0xD7AF)))
 
 
+def origin_of(url):
+    """scheme://host[:port] only, so a path-prefix proxy (/ask-en/) still matches."""
+    u = urllib.parse.urlsplit(url)
+    return f"{u.scheme}://{u.netloc}"
+
+
 def call(base, path, body=None, method=None):
     data = None if body is None else json.dumps(body).encode()
     req = urllib.request.Request(base + path, data=data, method=method or ("POST" if data else "GET"),
-                                 headers={"Content-Type": "application/json", "Origin": base.rstrip("/")})
+                                 headers={"Content-Type": "application/json", "Origin": origin_of(base)})
     with urllib.request.urlopen(req, timeout=30) as resp:
         return json.loads(resp.read())
 
